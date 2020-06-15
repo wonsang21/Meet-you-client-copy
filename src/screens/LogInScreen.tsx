@@ -10,7 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
+import * as RootNavigation from '../RootNavigation';
 class LogInScreen extends Component {
   render() {
     console.log(this.props);
@@ -30,7 +30,7 @@ class LogInScreen extends Component {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.props.navigation.navigate('MainStack')}
+            onPress={() => RootNavigation.navigate('MainStack', {})}
           >
             <Text style={styles.buttonTitle}>Login</Text>
           </TouchableOpacity>

@@ -11,6 +11,25 @@ import MainScreen from './src/screens/MainScreen';
 import ChatsScreen from './src/screens/ChatsScreen';
 import MiniGameScreen from './src/screens/MiniGameScreen';
 import MyProfileScreen from './src/screens/MyProfileScreen';
+import reducers from "./src/reducers/index";
+import { Provider } from "react-redux";
+import Recommend from './src/components/Recommenduser'
+import Capp from './src/containers/Capp';
+import Detail from './src/components/userfile/Detail'
+import { navigationRef } from './src/RootNavigation';
+import { createStore, compose } from 'redux'
+
+declare global {
+  interface Window {
+    devToolsExtension: typeof compose;
+  }
+}
+
+const store = createStore(
+  reducers,
+  window.devToolsExtension ? window.devToolsExtension() : f => f
+);
+
 
 // 로그인 및 회원가입 화면 (첫화면)
 const AuthStack = createStackNavigator();
@@ -57,7 +76,7 @@ interface AppState {
   userInfo: {};
 }
 
-class App extends React.Component<AppProps, AppState> {
+class Home extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
@@ -78,21 +97,20 @@ class App extends React.Component<AppProps, AppState> {
     console.log('this.props', this.props);
     if (this.state.isLogin === false) {
       return (
-        <NavigationContainer>
+
           <SafeAreaView style={{ flex: 1 }}>
             <AuthStack.Navigator initialRouteName="LogIn">
               <AuthStack.Screen name="LogIn" component={LogInScreen} />
               <AuthStack.Screen name="SignUp" component={SignUpScreen} />
             </AuthStack.Navigator>
           </SafeAreaView>
-        </NavigationContainer>
+
       );
     }
     return (
-      <NavigationContainer>
         <SafeAreaView style={{ flex: 1 }}>
           <Tab.Navigator initialRouteName="MainStack">
-            <Tab.Screen name="MainStack" component={MainStackScreen} />
+            <Tab.Screen name="MainStack" component={Capp} />
             <Tab.Screen name="ChatsStack" component={ChatsStackScreen} />
             <Tab.Screen name="MiniGameStack" component={MiniGameStackScreen} />
             <Tab.Screen
@@ -101,9 +119,21 @@ class App extends React.Component<AppProps, AppState> {
             />
           </Tab.Navigator>
         </SafeAreaView>
-      </NavigationContainer>
     );
   }
 }
+export default function App() {
+  return (
+    <Provider store={store}>
+      <NavigationContainer ref={navigationRef}>
+        <AuthStack.Navigator>
+          <AuthStack.Screen name="Home" component={Home} />
+          <AuthStack.Screen name="Details" component={Detail} />
+          <AuthStack.Screen name="Recommend" component={Recommend} />
+        </AuthStack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
+}
 
-export default App;
+        
