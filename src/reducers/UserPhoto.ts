@@ -7,8 +7,8 @@ interface AppState{
 }
 
 type Action =
-    | { type: "SET_USER"; }
-    | { type: "USER_RE"; };
+    | { type: "SET_USER"; user: []}
+    | { type: "USER_RE"; user:[] };
 
 const UserPhoto = (state: AppState, action: Action) => {
     console.log(action,'action')
@@ -19,11 +19,11 @@ const UserPhoto = (state: AppState, action: Action) => {
         
         case SET_USER :
             return Object.assign({}, state, {
-                userfile: firstfake
+                userfile: action.user
             })
         case USER_RE :
             return Object.assign({}, state, {
-                userfile: fakeData
+                userfile: action.user
             })
     }
 }

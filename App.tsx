@@ -16,7 +16,6 @@ import { Provider } from 'react-redux';
 import Recommend from './src/components/Recommenduser';
 import Capp from './src/containers/Capp';
 import Detail from './src/components/userfile/Detail';
-import Main from './src/components/Main/Main';
 import { navigationRef } from './src/RootNavigation';
 import { createStore, compose } from 'redux';
 
@@ -38,7 +37,7 @@ const AuthStack = createStackNavigator();
 const MainStack = createStackNavigator();
 const MainStackScreen = () => (
   <MainStack.Navigator initialRouteName="Main">
-    <MainStack.Screen name="Main" component={Main} />
+    <MainStack.Screen name="Main" component={Capp} />
     <MainStack.Screen name="Details" component={Detail} />
     <MainStack.Screen name="Recommend" component={Recommend} />
   </MainStack.Navigator>
@@ -71,7 +70,7 @@ const MyProfileStackScreen = () => (
 // 로그인 성공 후 보여질 탭 네비게이터 생성
 const Tab = createBottomTabNavigator();
 
-interface AppProps {}
+interface AppProps { }
 
 interface AppState {
   isLogin: boolean;
@@ -97,7 +96,7 @@ class App extends React.Component<AppProps, AppState> {
 
   render() {
     console.log('this.props', this.props);
-    if (this.state.isLogin === false) {
+    if (this.state.isLogin === true) {
       return (
         <Provider store={store}>
           <NavigationContainer ref={navigationRef}>
@@ -135,16 +134,3 @@ class App extends React.Component<AppProps, AppState> {
 }
 
 export default App;
-// export default function App() {
-//   return (
-//     <Provider store={store}>
-//       <NavigationContainer ref={navigationRef}>
-//         <AuthStack.Navigator>
-//           <AuthStack.Screen name="Home" component={Home} />
-//           <AuthStack.Screen name="Details" component={Detail} />
-//           <AuthStack.Screen name="Recommend" component={Recommend} />
-//         </AuthStack.Navigator>
-//       </NavigationContainer>
-//     </Provider>
-//   );
-// }

@@ -41,7 +41,6 @@ const Athoder = styled.Text`
   color: black;
 `
 
-
 function Main({ userfile, onClick }: Props) {
 
   console.log(userfile,'요로로로로')
@@ -56,7 +55,7 @@ function Main({ userfile, onClick }: Props) {
             <View style={{flexDirection: "row" }}>
               {userfile.UserPhoto.userfile.map((user: { profile_photo: string; username: string; age: string; },index:number) => (
                 <Gallery key={index}>
-                  <TouchableOpacity onPress={function()  {return RootNavigation.navigate('Details', { user: user })}}>
+                  <TouchableOpacity onPress={() =>  RootNavigation.navigate('Details', { user: user })}>
                     <StylePhoto source={{ uri: user.profile_photo }} />
                     <UserProfile>{user.username}</UserProfile>
                     <UserProfile>{user.age}</UserProfile>

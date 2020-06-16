@@ -5,6 +5,7 @@ import Main from './Main';
 import {setUser} from '../action'
 import Recomment from '../components/Recommend/Recommend'
 import { View, Text, TouchableOpacity, Image, StyleSheet, Button } from 'react-native';
+import axios from 'axios';
 
 
 export interface Props {
@@ -12,6 +13,7 @@ export interface Props {
     onClick?:() => void
     navigation?: any
     dispatch:any
+    randomUser:any
 }
 export interface State {
     userfile?: {}
@@ -29,8 +31,18 @@ class App extends Component<Props, State>{
         this.getUserfile()
     }
     getUserfile() {
-        // this.setState({ userfile: firstfake})
-        this.props.dispatch(setUser())
+        axios({
+            url: 'http://192.168.0.16:5000/user/information',
+            method: 'get',
+            headers: {
+                'Authorization': `Basic ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuuCqOyekCIsInBhc3N3b3JkIjoiY2Q4M2ExYTdkZWUwNWVhYzg4NDI5YjU0NTg4ZTI1ZDRkMDZlYWU5OCIsImlhdCI6MTU5MjMwMzIzNCwiZXhwIjoxNTkyMzg5NjM0fQ.KVg8po1zCMF9QEbCBU4gSD2d6Uq9PDuAbermdZskYvM"}`
+            }
+        }).then(data => {
+            console.log(data,'axios')
+            this.props.dispatch(setUser(data.data[1]))
+        }).catch((error) => {
+            console.log(error,'error')
+        })
     }
 
     render() {
