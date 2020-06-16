@@ -95,7 +95,7 @@ class Home extends React.Component<AppProps, AppState> {
 
   render() {
     console.log('this.props', this.props);
-    if (this.state.isLogin === false) {
+    if (this.state.isLogin === true) {
       return (
 
           <SafeAreaView style={{ flex: 1 }}>
