@@ -11,7 +11,7 @@ import MainScreen from './src/screens/MainScreen';
 import ChatsScreen from './src/screens/ChatsScreen';
 import MiniGameScreen from './src/screens/MiniGameScreen';
 import MyProfileScreen from './src/screens/MyProfileScreen';
-import reducers from './src/reducers/index';
+import rootReducer from './src/reducers/index';
 import { Provider } from 'react-redux';
 import Recommend from './src/components/Recommenduser';
 import Capp from './src/containers/Capp';
@@ -26,7 +26,7 @@ declare global {
 }
 
 const store = createStore(
-  reducers,
+  rootReducer,
   window.devToolsExtension ? window.devToolsExtension() : (f) => f,
 );
 

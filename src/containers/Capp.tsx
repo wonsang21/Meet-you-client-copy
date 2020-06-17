@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import firstfake from '../fakeData/firstfake';
 import Main from './Main';
-import {setUser} from '../action'
+import { setUser, myProFile} from '../action'
 import Recomment from '../components/Recommend/Recommend'
 import { View, Text, TouchableOpacity, Image, StyleSheet, Button } from 'react-native';
 import axios from 'axios';
@@ -23,9 +22,7 @@ class App extends Component<Props, State>{
     
     constructor(props: Readonly<Props>) {
         super(props)
-        this.state = {
-          userfile: []
-        }
+        
     }
     componentDidMount() {
         this.getUserfile()
@@ -39,6 +36,7 @@ class App extends Component<Props, State>{
             }
         }).then(data => {
             console.log(data,'axios')
+            this.props.dispatch(myProFile(data.data[0]))
             this.props.dispatch(setUser(data.data[1]))
         }).catch((error) => {
             console.log(error,'error')
@@ -46,7 +44,7 @@ class App extends Component<Props, State>{
     }
 
     render() {
-        console.log(this.state,'이거뭐ssssssssssssss야')
+        console.log(this.props,'이거뭐ssssssssssssss야')
         return (
             <View>
             <Main ></Main>
@@ -56,10 +54,11 @@ class App extends Component<Props, State>{
     }
 }
 
-const mapStateToProps = (state: {}) => {
+const mapStateToProps = (state: any) => {
     console.log(state,'stateaaa')
     return {
-        userfile: state
+        userfile: state.UserPhoto,
+        myprofile: state.Myprofile
     }
 }
 export default connect(mapStateToProps)(App)

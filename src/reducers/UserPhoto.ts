@@ -1,6 +1,4 @@
-import fakeData from "../fakeData/nextfakeData"
-import firstfake from "../fakeData/firstfake"
-import { SET_USER, USER_RE } from "../action";
+import { SET_USER, USER_RE, MY_PRO_FILE } from "../action";
 
 interface AppState{
 
@@ -25,7 +23,13 @@ const UserPhoto = (state: AppState, action: Action) => {
             return Object.assign({}, state, {
                 userfile: action.user
             })
+        case MY_PRO_FILE:
+            return Object.assign({}, state, {
+                myprofile: action.profile
+            })
+
     }
+    
 }
 
 
