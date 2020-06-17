@@ -44,7 +44,7 @@ function DetailsScreen({ route }: Props) {
             <Text>  내 취미 는 {route.params.user.hobbies.map((hobby:string,index:number) => 
                      <Sadsfe key ={index} >{hobby}</Sadsfe>
                 )}</Text>
-                <Text>이상형 {route.params.user.personalities.map((idealType: string, index: number) =>
+                <Text>이상형 {route.params.user.idealTypes.map((idealType: string, index: number) =>
                     <Sadsfe key={index}>{idealType}</Sadsfe>
                 )}</Text>
               <Text> 내성격 {route.params.user.personalities.map((personality: string, index: number) =>
