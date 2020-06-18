@@ -43,7 +43,7 @@ const Athoder = styled.Text`
 
 function Main({ userfile, onClick }: Props) {
 
-  console.log(userfile,'요로로로로')
+  console.log(onClick,'요로로로로')
   if (userfile.UserPhoto.userfile === undefined) {
     console.log('통과')
     return(

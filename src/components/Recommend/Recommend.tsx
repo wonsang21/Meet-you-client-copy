@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Button } from 'react-native';
 import styled from "styled-components/native";
-// import store from '../store'
 import * as RootNavigation from '../../RootNavigation';
 import fakedata from '../../fakeData/firstfake'
 const ButtonContainer = styled.TouchableOpacity`
@@ -19,14 +18,16 @@ const Athoder = styled.Text`
 `
 console.log(fakedata,'시바 잠만 이거 뭐야?')
 
-function Recommend() {
+function Recommend(props) {
+  console.log(props,'올드 받아와지나?')
+  let oldUserRoute= {odl:'oldUser'}
     return (
         <View>
             <Text>여기는 새로운 추천</Text>
                 <ButtonContainer onPress={() => RootNavigation.navigate('Recommend', fakedata)}>
                 <Athoder>동네 여사친들</Athoder>
                 </ButtonContainer>
-                <ButtonContainer onPress={() => RootNavigation.navigate('Recommend', fakedata)}>
+                <ButtonContainer onPress={() => RootNavigation.navigate('OldUser',props)}>
                   <Athoder>밥 잘사주는 연상</Athoder>
                 </ButtonContainer>
                 <ButtonContainer onPress={() => RootNavigation.navigate('Recommend', fakedata)}>

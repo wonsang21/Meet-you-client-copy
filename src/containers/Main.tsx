@@ -13,18 +13,21 @@ function mapreduxstate(state:any) {
 
 function mapDispatchToProps(dispatch:any) {
     return {
-        onClick: () => axios({
-            url: 'http://192.168.0.16:5000/user/information',
-            method: 'get',
-            headers: {
-                'Authorization': `Basic ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuuCqOyekCIsInBhc3N3b3JkIjoiY2Q4M2ExYTdkZWUwNWVhYzg4NDI5YjU0NTg4ZTI1ZDRkMDZlYWU5OCIsImlhdCI6MTU5MjMwMzIzNCwiZXhwIjoxNTkyMzg5NjM0fQ.KVg8po1zCMF9QEbCBU4gSD2d6Uq9PDuAbermdZskYvM"}`
-            }
-        }).then(data => {
-            console.log(data, 'axios')
-            dispatch(setUser(data.data[1]))
-        }).catch((error) => {
-            console.log(error, 'error')
+      onClick: () =>
+        axios({
+          url: 'http://192.168.0.16:5000/user/information',
+          method: 'get',
+          headers: {
+            Authorization: `Basic ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuywqOuLqOu5hCIsInBhc3N3b3JkIjoiZDZiZWQ3MTBkYTNkNzRhZWEwMDZkOGFhYzE4YzVmODQ5OWE4MTYxZiIsImlhdCI6MTU5MjQ4MDY2MCwiZXhwIjoxNTkyNTY3MDYwfQ.kcic-giPE-3p_paURXcvk_3WRy0gq8amtPcq6HXCWdw'}`,
+          },
         })
-    }
+          .then((data) => {
+            console.log(data, 'axios');
+            dispatch(setUser(data.data[1]));
+          })
+          .catch((error) => {
+            console.log(error, 'error');
+          }),
+    };
 }
 export default connect(mapreduxstate, mapDispatchToProps)(Main)

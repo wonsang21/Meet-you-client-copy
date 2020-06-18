@@ -42,14 +42,14 @@ interface User {
   username: React.ReactNode;
   age: React.ReactNode;
 }
+//재사용 할수 있을까? 추천 기능을?
 
 
-
-function DetailsScreen(fakedata: Props ) {
-    console.log(fakedata.route.params,'fake')
-    return (
+function OldUser(props) {
+  console.log(props.route.params,'fake')
+  return props.route.params ? (
         <View style={{ flexDirection: "row" }}>
-            {fakedata.route.params.map((user: User, index: number) => (<Gallery key={index}>
+      {props.route.params.oldUser.map((user: User, index: number) => (<Gallery key={index}>
               <TouchableOpacity onPress={() => RootNavigation.navigate('Details', { user: user })}>
                 <StylePhoto source={{ uri: user.profile_photo }} />
                 <UserProfile>{user.username}</UserProfile>
@@ -57,7 +57,7 @@ function DetailsScreen(fakedata: Props ) {
               </TouchableOpacity>
             </Gallery>))}
         </View>
-    );
+    ) : <View></View>
 }
 
-export default DetailsScreen
+export default OldUser
