@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import UserPhoto from './UserPhoto'
+import UserPhoto from './UserPhoto';
 
 const rootReducer = combineReducers({
-    UserPhoto
-})
+  UserPhoto,
+});
 
 export default rootReducer;
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;

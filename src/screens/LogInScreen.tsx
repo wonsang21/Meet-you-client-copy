@@ -11,26 +11,90 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import * as RootNavigation from '../RootNavigation';
-class LogInScreen extends Component {
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+
+interface AppProps {}
+
+interface AppState {
+  username: any;
+  password: any;
+}
+
+class LogInScreen extends Component<AppProps, AppState> {
+  constructor(props: AppProps) {
+    super(props);
+    this.state = {
+      username: '',
+      password: '',
+    };
+  }
+
+  // 아이디 비밀번호 입력시 state값 최신화
+  handleInputValue = (name, value) => {
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  // 로그인 성공시 토큰값 저장
+  setUserToken = async (value: string) => {
+    try {
+      await AsyncStorage.setItem('USERTOKEN', value);
+      console.log('토큰저장완료');
+    } catch (error) {
+      console.log('setUserTokenError', error);
+    }
+  };
+
+  // 로그인 기능
+  handleLogin = () => {
+    const { username, password } = this.state;
+    if (username && password) {
+      axios
+        .post('http://172.30.1.15:5000/user/login', this.state) // 데이터 넘어감
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            console.log('로그인 토큰값', res.data.accessToken);
+            this.setUserToken(res.data.accessToken);
+            alert('로그인 성공');
+            // this.props.navigation.navigate('MainStack');
+          }
+        })
+        .catch((error) => {
+          console.log('axios 로그인 에러', error);
+          alert('아이디가 존재하지 않거나 비밀번호가 일치하지 않습니다');
+        });
+    } else {
+      alert('빠짐없이 입력하세요');
+    }
+  };
+
   render() {
-    console.log(this.props);
+    console.log(this.state);
     return (
       <View style={styles.container}>
         <View style={styles.titleArea}>
           <Text style={styles.title}>Meet-you</Text>
         </View>
         <View style={styles.formArea}>
-          <TextInput style={styles.textForm} placeholder={'ID'} />
+          <TextInput
+            style={styles.textForm}
+            placeholder={'ID'}
+            onChangeText={(txt) => this.handleInputValue('username', txt)}
+          />
           <TextInput
             style={styles.textForm}
             placeholder={'Password'}
+            onChangeText={(txt) => this.handleInputValue('password', txt)}
             secureTextEntry
           />
         </View>
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => RootNavigation.navigate('MainStack', {})}
+            onPress={() => this.handleLogin()}
           >
             <Text style={styles.buttonTitle}>Login</Text>
           </TouchableOpacity>

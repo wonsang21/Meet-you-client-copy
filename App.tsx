@@ -19,6 +19,7 @@ import Detail from './src/components/userfile/Detail';
 import Main from './src/components/Main/Main';
 import { navigationRef } from './src/RootNavigation';
 import { createStore, compose } from 'redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 declare global {
   interface Window {
@@ -74,30 +75,38 @@ const Tab = createBottomTabNavigator();
 interface AppProps {}
 
 interface AppState {
-  isLogin: boolean;
-  userInfo: {};
+  userToken: string;
 }
 
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
-      isLogin: false,
-      userInfo: {},
+      userToken: '',
     };
+    this.getUserToken();
   }
 
-  loginHandler = (id: string) => {
-    if (!this.state.isLogin) {
-      this.setState({
-        userInfo: {},
-      });
+  // usertoken을 가져오는 함수
+  getUserToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem('USERTOKEN');
+      if (value !== null) {
+        console.log('토큰있음', value);
+        this.setState({
+          userToken: value,
+        });
+      } else {
+        console.log('토큰없음', value);
+      }
+    } catch (error) {
+      console.log('getUserTokenError', error);
     }
   };
 
   render() {
-    console.log('this.props', this.props);
-    if (this.state.isLogin === false) {
+    if (this.state.userToken !== null) {
+      // userToken이 없으면 바로 로그인스크린으로 이동
       return (
         <Provider store={store}>
           <NavigationContainer ref={navigationRef}>
@@ -110,41 +119,28 @@ class App extends React.Component<AppProps, AppState> {
           </NavigationContainer>
         </Provider>
       );
-    }
-    return (
-      <Provider store={store}>
-        <NavigationContainer ref={navigationRef}>
-          <SafeAreaView style={{ flex: 1 }}>
-            <Tab.Navigator initialRouteName="MainStack">
-              <Tab.Screen name="MainStack" component={MainStackScreen} />
-              <Tab.Screen name="ChatsStack" component={ChatsStackScreen} />
-              <Tab.Screen
-                name="MiniGameStack"
-                component={MiniGameStackScreen}
-              />
-              <Tab.Screen
-                name="MyProfileStack"
-                component={MyProfileStackScreen}
-              />
-            </Tab.Navigator>
-          </SafeAreaView>
-        </NavigationContainer>
-      </Provider>
-    );
+    } // userToken이 있으면 바로 메인스크린으로 이동
+    // return (
+    //   <Provider store={store}>
+    //     <NavigationContainer ref={navigationRef}>
+    //       <SafeAreaView style={{ flex: 1 }}>
+    //         <Tab.Navigator initialRouteName="MainStack">
+    //           <Tab.Screen name="MainStack" component={MainStackScreen} />
+    //           <Tab.Screen name="ChatsStack" component={ChatsStackScreen} />
+    //           <Tab.Screen
+    //             name="MiniGameStack"
+    //             component={MiniGameStackScreen}
+    //           />
+    //           <Tab.Screen
+    //             name="MyProfileStack"
+    //             component={MyProfileStackScreen}
+    //           />
+    //         </Tab.Navigator>
+    //       </SafeAreaView>
+    //     </NavigationContainer>
+    //   </Provider>
+    // );
   }
 }
 
 export default App;
-// export default function App() {
-//   return (
-//     <Provider store={store}>
-//       <NavigationContainer ref={navigationRef}>
-//         <AuthStack.Navigator>
-//           <AuthStack.Screen name="Home" component={Home} />
-//           <AuthStack.Screen name="Details" component={Detail} />
-//           <AuthStack.Screen name="Recommend" component={Recommend} />
-//         </AuthStack.Navigator>
-//       </NavigationContainer>
-//     </Provider>
-//   );
-// }
