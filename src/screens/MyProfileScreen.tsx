@@ -4,7 +4,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+
 import styled from 'styled-components/native';
+
 import oc from 'open-color';
 import axios from 'axios';
 import { connect, useSelector, useDispatch } from 'react-redux';
@@ -14,6 +16,7 @@ const StylePhoto = styled.Image`
   height: 300px;
 `;
 const UserNameAge = styled.Text`
+
   font-size: 21px;
 `;
 const UserbloodAndaddress = styled.Text`
@@ -42,12 +45,15 @@ function MyProfileScreen({ myprofile }) {
           <UserbloodAndaddress>
             {myprofile.address}, {myprofile.blood}
           </UserbloodAndaddress>
+
+
           <Text>{myprofile.gender}</Text>
           <Text>{myprofile.drinking}</Text>
           <Text>{myprofile.smoking}</Text>
           <Text>{myprofile.job}</Text>
           <Text>{myprofile.school}</Text>
         </View>
+
         <View
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
@@ -77,6 +83,8 @@ function MyProfileScreen({ myprofile }) {
       </View>
     </ScrollView>
   );
+=======
+
 }
 
 const styles = StyleSheet.create({
@@ -89,9 +97,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: any) => {
   return {
+
     myprofile: state.UserPhoto.myprofile,
   };
 };
 export default connect(mapStateToProps)(MyProfileScreen);
+
+
 
 // export default MyProfileScreen;

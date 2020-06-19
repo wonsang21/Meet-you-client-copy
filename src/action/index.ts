@@ -1,3 +1,4 @@
+
 export const SET_USER = 'SET_USER';
 export const USER_RE = 'USER_RE';
 export const MY_PRO_FILE = 'MY_PRO_FYLE';
@@ -15,3 +16,4 @@ export const myProFile = (profile: any) => ({
   type: MY_PRO_FILE,
   profile,
 });
+

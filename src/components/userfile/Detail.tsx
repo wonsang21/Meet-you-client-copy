@@ -8,6 +8,7 @@ const StylePhoto = styled.Image`
   height: 300px;
 `;
 const UserNameAge = styled.Text`
+
   font-size: 21px;
 `;
 const UserbloodAndaddress = styled.Text`
@@ -74,6 +75,7 @@ function DetailsScreen({ route }: Props) {
       </View>
     </View>
   );
+
 }
 
 export default DetailsScreen;

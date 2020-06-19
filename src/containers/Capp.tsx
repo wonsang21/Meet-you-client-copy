@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import Main from './Main';
+
 import { setUser, myProFile } from '../action';
 import Recomment from '../components/Recommend/Recommend';
 import {
@@ -19,10 +20,13 @@ export interface Props {
   navigation?: any;
   dispatch: any;
   randomUser: any;
+
+
 }
 export interface State {
   userfile?: {};
 }
+
 
 class App extends Component<Props, State> {
   constructor(props: Readonly<Props>) {
@@ -68,3 +72,5 @@ const mapStateToProps = (state: any) => {
   };
 };
 export default connect(mapStateToProps)(App);
+=
+

@@ -1,6 +1,10 @@
+
 import { SET_USER, USER_RE, MY_PRO_FILE } from '../action';
 
+
+
 interface AppState {}
+
 
 type Action = { type: 'SET_USER'; user: [] } | { type: 'USER_RE'; user: [] };
 
@@ -24,5 +28,7 @@ const UserPhoto = (state: AppState, action: Action) => {
       });
   }
 };
+=======
+
 
 export default UserPhoto;

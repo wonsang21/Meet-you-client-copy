@@ -31,6 +31,7 @@ const store = createStore(
   window.devToolsExtension ? window.devToolsExtension() : (f) => f,
 );
 
+
 // //로그인, 회원가입 스택
 const AuthStack = createStackNavigator({
   LogIn: {
@@ -101,7 +102,7 @@ const RootStack = createSwitchNavigator(
 
 const AppContainer = createAppContainer(RootStack);
 
-interface AppProps {}
+interface AppProps { }
 
 interface AppState {
   userToken: string;
@@ -113,7 +114,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
-    // userToken이 없으면 바로 로그인스크린으로 이동
+
     return (
       <Provider store={store}>
         <SafeAreaView style={{ flex: 1 }}>
