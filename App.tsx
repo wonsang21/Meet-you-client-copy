@@ -1,25 +1,24 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import { SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
+import AuthLoadingScreen from './src/screens/AuthLoadingScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import MainScreen from './src/screens/MainScreen';
 import ChatsScreen from './src/screens/ChatsScreen';
 import MiniGameScreen from './src/screens/MiniGameScreen';
 import MyProfileScreen from './src/screens/MyProfileScreen';
-import reducers from './src/reducers/index';
+import rootReducer from './src/reducers/index';
 import { Provider } from 'react-redux';
 import Recommend from './src/components/Recommenduser';
 import Capp from './src/containers/Capp';
 import Detail from './src/components/userfile/Detail';
-import Main from './src/components/Main/Main';
 import { navigationRef } from './src/RootNavigation';
 import { createStore, compose } from 'redux';
-import AsyncStorage from '@react-native-community/async-storage';
 
 declare global {
   interface Window {
@@ -28,49 +27,79 @@ declare global {
 }
 
 const store = createStore(
-  reducers,
+  rootReducer,
   window.devToolsExtension ? window.devToolsExtension() : (f) => f,
 );
 
-// 로그인 및 회원가입 화면 (첫화면)
-const AuthStack = createStackNavigator();
+// //로그인, 회원가입 스택
+const AuthStack = createStackNavigator({
+  LogIn: {
+    screen: LogInScreen,
+  },
+  SignUp: {
+    screen: SignUpScreen,
+  },
+});
 
-// 메인탭
-const MainStack = createStackNavigator();
-const MainStackScreen = () => (
-  <MainStack.Navigator initialRouteName="Main">
-    <MainStack.Screen name="Main" component={Main} />
-    <MainStack.Screen name="Details" component={Detail} />
-    <MainStack.Screen name="Recommend" component={Recommend} />
-  </MainStack.Navigator>
-);
+// 메인 스택
+const MainStack = createStackNavigator({
+  Main: {
+    screen: Capp,
+  },
+  Details: {
+    screen: Detail,
+  },
+  Recommend: {
+    screen: Recommend,
+  },
+});
 
-// 채팅탭
-const ChatsStack = createStackNavigator();
-const ChatsStackScreen = () => (
-  <ChatsStack.Navigator>
-    <ChatsStack.Screen name="Chats" component={ChatsScreen} />
-  </ChatsStack.Navigator>
-);
+// 채팅 스택
+const ChatsStack = createStackNavigator({
+  Chats: {
+    screen: ChatsScreen,
+  },
+});
 
-// 미니게임탭
-const MiniGameStack = createStackNavigator();
-const MiniGameStackScreen = () => (
-  <MiniGameStack.Navigator>
-    <MiniGameStack.Screen name="MiniGame" component={MiniGameScreen} />
-  </MiniGameStack.Navigator>
-);
+// 미니게임 스택
+const MiniGameStack = createStackNavigator({
+  MiniGame: {
+    screen: MiniGameScreen,
+  },
+});
 
-// 프로필 탭
-const MyProfileStack = createStackNavigator();
-const MyProfileStackScreen = () => (
-  <MyProfileStack.Navigator>
-    <MyProfileStack.Screen name="MyProfile" component={MyProfileScreen} />
-  </MyProfileStack.Navigator>
-);
+// 프로필 스택
+const MyProfileStack = createStackNavigator({
+  MyProfile: {
+    screen: MyProfileScreen,
+  },
+});
 
 // 로그인 성공 후 보여질 탭 네비게이터 생성
-const Tab = createBottomTabNavigator();
+const TabStack = createBottomTabNavigator(
+  {
+    MainStack,
+    ChatsStack,
+    MiniGameStack,
+    MyProfileStack,
+  },
+  {
+    initialRouteName: 'MainStack',
+  },
+);
+
+const RootStack = createSwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    Auth: AuthStack,
+    Tab: TabStack,
+  },
+  {
+    initialRouteName: 'AuthLoading',
+  },
+);
+
+const AppContainer = createAppContainer(RootStack);
 
 interface AppProps {}
 
@@ -81,65 +110,17 @@ interface AppState {
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
-    this.state = {
-      userToken: '',
-    };
-    this.getUserToken();
   }
 
-  // usertoken을 가져오는 함수
-  getUserToken = async () => {
-    try {
-      const value = await AsyncStorage.getItem('USERTOKEN');
-      if (value !== null) {
-        console.log('토큰있음', value);
-        this.setState({
-          userToken: value,
-        });
-      } else {
-        console.log('토큰없음', value);
-      }
-    } catch (error) {
-      console.log('getUserTokenError', error);
-    }
-  };
-
   render() {
-    if (this.state.userToken !== null) {
-      // userToken이 없으면 바로 로그인스크린으로 이동
-      return (
-        <Provider store={store}>
-          <NavigationContainer ref={navigationRef}>
-            <SafeAreaView style={{ flex: 1 }}>
-              <AuthStack.Navigator initialRouteName="LogIn">
-                <AuthStack.Screen name="LogIn" component={LogInScreen} />
-                <AuthStack.Screen name="SignUp" component={SignUpScreen} />
-              </AuthStack.Navigator>
-            </SafeAreaView>
-          </NavigationContainer>
-        </Provider>
-      );
-    } // userToken이 있으면 바로 메인스크린으로 이동
-    // return (
-    //   <Provider store={store}>
-    //     <NavigationContainer ref={navigationRef}>
-    //       <SafeAreaView style={{ flex: 1 }}>
-    //         <Tab.Navigator initialRouteName="MainStack">
-    //           <Tab.Screen name="MainStack" component={MainStackScreen} />
-    //           <Tab.Screen name="ChatsStack" component={ChatsStackScreen} />
-    //           <Tab.Screen
-    //             name="MiniGameStack"
-    //             component={MiniGameStackScreen}
-    //           />
-    //           <Tab.Screen
-    //             name="MyProfileStack"
-    //             component={MyProfileStackScreen}
-    //           />
-    //         </Tab.Navigator>
-    //       </SafeAreaView>
-    //     </NavigationContainer>
-    //   </Provider>
-    // );
+    // userToken이 없으면 바로 로그인스크린으로 이동
+    return (
+      <Provider store={store}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <AppContainer ref={navigationRef}></AppContainer>
+        </SafeAreaView>
+      </Provider>
+    );
   }
 }
 

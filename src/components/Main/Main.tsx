@@ -8,8 +8,8 @@ import {
   Button,
 } from 'react-native';
 import styled from 'styled-components/native';
+import { withNavigation } from 'react-navigation';
 // import store from '../../store'
-import * as RootNavigation from '../../RootNavigation';
 
 interface Props {
   userfile: undefined | any;
@@ -62,9 +62,9 @@ function Main({ userfile, onClick }: Props) {
           ) => (
             <Gallery key={index}>
               <TouchableOpacity
-                onPress={function () {
-                  return RootNavigation.navigate('Details', { user: user });
-                }}
+                onPress={() =>
+                  this.props.navigation.navigate('Details', { user: user })
+                }
               >
                 <StylePhoto source={{ uri: user.profile_photo }} />
                 <UserProfile>{user.username}</UserProfile>

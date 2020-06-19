@@ -12,7 +12,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { withNavigation } from 'react-navigation';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import {
@@ -629,7 +629,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
           <View style={styles.submitbuttonArea}>
             <TouchableOpacity
               style={styles.submitbutton}
-              onPress={() => this.props.navigation.navigate('LogIn')} // 작동완료
+              onPress={() => this.props.navigation.navigate('Login')} // 작동완료
             >
               <Text style={styles.submitbuttonTitle}>로그인으로 돌아기기</Text>
             </TouchableOpacity>
@@ -640,7 +640,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
   }
 }
 
-export default SignUpScreen;
+export default withNavigation(SignUpScreen);
 
 const styles = StyleSheet.create({
   container: {

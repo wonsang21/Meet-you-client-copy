@@ -5,14 +5,14 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  AsyncStorage,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import * as RootNavigation from '../RootNavigation';
+import { withNavigation } from 'react-navigation';
 import axios from 'axios';
-import AsyncStorage from '@react-native-community/async-storage';
 
 interface AppProps {}
 
@@ -24,6 +24,7 @@ interface AppState {
 class LogInScreen extends Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
+    console.log('슈퍼프롭스', super(props));
     this.state = {
       username: '',
       password: '',
@@ -59,7 +60,7 @@ class LogInScreen extends Component<AppProps, AppState> {
             console.log('로그인 토큰값', res.data.accessToken);
             this.setUserToken(res.data.accessToken);
             alert('로그인 성공');
-            // this.props.navigation.navigate('MainStack');
+            this.props.navigation.navigate('AuthLoading'); // AuthLoadingScreen으로 이동
           }
         })
         .catch((error) => {
@@ -94,7 +95,9 @@ class LogInScreen extends Component<AppProps, AppState> {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.handleLogin()}
+            onPress={() => {
+              this.handleLogin();
+            }}
           >
             <Text style={styles.buttonTitle}>Login</Text>
           </TouchableOpacity>
@@ -112,7 +115,7 @@ class LogInScreen extends Component<AppProps, AppState> {
   }
 }
 
-export default LogInScreen;
+export default withNavigation(LogInScreen);
 
 const styles = StyleSheet.create({
   container: {

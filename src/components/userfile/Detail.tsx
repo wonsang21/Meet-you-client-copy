@@ -8,14 +8,19 @@ const StylePhoto = styled.Image`
   height: 300px;
 `;
 const UserNameAge = styled.Text`
-  font-size: 11px;
+  font-size: 21px;
 `;
-// const Aewrw = styled.Text`
+const UserbloodAndaddress = styled.Text`
+  font-size: 17px;
+`;
+const Sadsfe = styled.Text`
+  background-color: mistyrose;
 
-// border-left-width: 1px;
-// border-left-style : solid;
-// border-left-color : #fff
-// `
+  padding: 5px;
+  margin: 10px;
+  border-radius: 50px;
+`;
+
 interface Props {
   route: any;
 }
@@ -29,17 +34,43 @@ function DetailsScreen({ route }: Props) {
           source={{ uri: route.params.user.profile_photo }}
         ></StylePhoto>
         <UserNameAge>
-          이름 : {route.params.user.username},{route.params.user.age}
+          {route.params.user.username}, {route.params.user.nickname},{' '}
+          {route.params.user.age}
         </UserNameAge>
-      </View>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>{route.params.user.address}</Text>
-        <Text>{route.params.user.nickname}</Text>
-        <Text>{route.params.user.blood}</Text>
+        <UserbloodAndaddress>
+          {route.params.user.address}, {route.params.user.blood}
+        </UserbloodAndaddress>
         <Text>{route.params.user.gender}</Text>
         <Text>{route.params.user.drinking}</Text>
         <Text>{route.params.user.smoking}</Text>
         <Text>{route.params.user.job}</Text>
+        <Text>{route.params.user.school}</Text>
+      </View>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>
+          {' '}
+          내 취미 는{' '}
+          {route.params.user.hobbies.map((hobby: string, index: number) => (
+            <Sadsfe key={index}>{hobby}</Sadsfe>
+          ))}
+        </Text>
+        <Text>
+          이상형{' '}
+          {route.params.user.idealTypes.map(
+            (idealType: string, index: number) => (
+              <Sadsfe key={index}>{idealType}</Sadsfe>
+            ),
+          )}
+        </Text>
+        <Text>
+          {' '}
+          내성격{' '}
+          {route.params.user.personalities.map(
+            (personality: string, index: number) => (
+              <Sadsfe key={index}>{personality}</Sadsfe>
+            ),
+          )}
+        </Text>
       </View>
     </View>
   );
