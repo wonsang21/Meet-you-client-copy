@@ -33,31 +33,29 @@ const ButtonContainer = styled.TouchableOpacity`
 `;
 
 interface Props {
-  route: any;
-  
+    route: any;
+
 }
 
 interface User {
-  profile_photo: any;
-  username: React.ReactNode;
-  age: React.ReactNode;
+    profile_photo: any;
+    username: React.ReactNode;
+    age: React.ReactNode;
 }
-//재사용 할수 있을까? 추천 기능을?
 
-
-function OldUser(props) {
-  console.log(props.route.params,'fake')
-  return props.route.params ? (
+function LikeHobby(props) {
+    console.log(props.route.params, 'fake')
+    return props.route.params ? (
         <View style={{ flexDirection: "row" }}>
-      {props.route.params.map((user: User, index: number) => (<Gallery key={index}>
-              <TouchableOpacity onPress={() => RootNavigation.navigate('Details', { user: user })}>
-                <StylePhoto source={{ uri: user.profile_photo }} />
-                <UserProfile>{user.username}</UserProfile>
-                <UserProfile>{user.age}</UserProfile>
-              </TouchableOpacity>
+            {props.route.params.oldUser.map((user: User, index: number) => (<Gallery key={index}>
+                <TouchableOpacity onPress={() => RootNavigation.navigate('Details', { user: user })}>
+                    <StylePhoto source={{ uri: user.profile_photo }} />
+                    <UserProfile>{user.username}</UserProfile>
+                    <UserProfile>{user.age}</UserProfile>
+                </TouchableOpacity>
             </Gallery>))}
         </View>
     ) : <View></View>
 }
 
-export default OldUser
+export default LikeHobby

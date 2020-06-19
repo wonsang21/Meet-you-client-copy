@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import Main from './Main';
 import Old from './Old';
-import { setUser, myProFile, oldUser} from '../action';
+import { setUser, myProFile, oldUser, userHobby} from '../action';
 import Recomment from '../components/Recommend/Recommend';
 import {
   View,
@@ -23,14 +23,21 @@ export interface Props {
 }
 export interface State {
   userfile?: {};
+  userId:number
 }
 
 class App extends Component<Props, State> {
   constructor(props: Readonly<Props>) {
     super(props);
+    this.state = {
+      userId : 0
+    }
+    //state값을 getUserfile에 setstate를 한다.
   }
+
   componentDidMount() {
     this.getUserfile();
+ 
     this.getOldUser()
   }
   getUserfile() {
@@ -44,6 +51,10 @@ class App extends Component<Props, State> {
       .then((data) => {
         this.props.dispatch(myProFile(data.data[0]));
         this.props.dispatch(setUser(data.data[1]));
+        console.log(data,'이거 무얏')
+        this.setState({
+          userId:data.data[0].id
+        })
       })
       .catch((error) => {
         console.log(error, 'error');
@@ -58,19 +69,37 @@ class App extends Component<Props, State> {
       },
     })
       .then((data) => {
-        console.log(data.data, 'axasfios');
         this.props.dispatch(oldUser(data.data))
+        console.log('axasyyyyyyyyyyyyyyyyyyyyyyyyfios');
       })
       .catch((error) => {
         console.log(error, 'error');
       });
   }
+  
+  // getHobbyUser() {
+  //   console.log('axasyyyyyyyyyyyyyyyyyyyyyyyyfiossssssssssssssss');
+  //   axios({
+  //     url: 'http://192.168.0.16:5000/main/hobby',
+  //     method: 'get',
+  //     params: {
+  //       userId: 1,
+  //     },
+  //   })
+  //     .then((data) => {
+  //       console.log('통과ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ되나');
+  //       this.props.dispatch(userHobby(data.data))
+  //     })
+  //     .catch((error) => {
+  //       console.log(error, 'error');
+  //     });
+  // }
 
   render() {
     console.log(this.props, '이거뭐ssssssssssssss야');
     return (
       <View>
-        <Main></Main>
+        <Main userId={this.state.userId}></Main>
         <Old ></Old>
       </View>
     );

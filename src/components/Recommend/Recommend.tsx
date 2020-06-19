@@ -16,18 +16,23 @@ const Athoder = styled.Text`
   font-size: 11px;
   color: black;
 `
-console.log(fakedata,'시바 잠만 이거 뭐야?')
 
 function Recommend(props) {
   console.log(props,'올드 받아와지나?')
-  let oldUserRoute= {odl:'oldUser'}
+  let oldUser
+    for(let key in props) {
+      if (key === 'oldUser') {
+        oldUser = key
+      }
+    }
+  console.log(oldUser)
     return (
         <View>
             <Text>여기는 새로운 추천</Text>
                 <ButtonContainer onPress={() => RootNavigation.navigate('Recommend', fakedata)}>
                 <Athoder>동네 여사친들</Athoder>
                 </ButtonContainer>
-                <ButtonContainer onPress={() => RootNavigation.navigate('OldUser',props)}>
+        <ButtonContainer onPress={() => RootNavigation.navigate('OldUser', props[oldUser])}>
                   <Athoder>밥 잘사주는 연상</Athoder>
                 </ButtonContainer>
                 <ButtonContainer onPress={() => RootNavigation.navigate('Recommend', fakedata)}>

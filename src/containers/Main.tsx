@@ -11,19 +11,20 @@ function mapreduxstate(state:any) {
     }
 }
 
-function mapDispatchToProps(dispatch:any) {
+function mapDispatchToProps(dispatch: any, { userId}:number) {
+  console.log(typeof userId,'임너감넝람너라무푸푸푸푸푸푸')
     return {
       onClick: () =>
         axios({
-          url: 'http://192.168.0.16:5000/user/information',
+          url: 'http://192.168.0.16:5000/main/randomUsers',
           method: 'get',
-          headers: {
-            Authorization: `Basic ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuywqOuLqOu5hCIsInBhc3N3b3JkIjoiZDZiZWQ3MTBkYTNkNzRhZWEwMDZkOGFhYzE4YzVmODQ5OWE4MTYxZiIsImlhdCI6MTU5MjQ4MDY2MCwiZXhwIjoxNTkyNTY3MDYwfQ.kcic-giPE-3p_paURXcvk_3WRy0gq8amtPcq6HXCWdw'}`,
+          params: {
+            userId: userId,
           },
         })
           .then((data) => {
             console.log(data, 'axios');
-            dispatch(setUser(data.data[1]));
+            dispatch(setUser(data.data));
           })
           .catch((error) => {
             console.log(error, 'error');
