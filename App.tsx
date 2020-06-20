@@ -13,7 +13,7 @@ import MiniGameScreen from './src/screens/MiniGameScreen';
 import MyProfileScreen from './src/screens/MyProfileScreen';
 import rootReducer from './src/reducers/index';
 import { Provider } from 'react-redux';
-import Recommend from './src/components/Recommenduser';
+import Recommend from './src/components/RecommendRander';
 import Capp from './src/containers/Capp';
 import Detail from './src/components/userfile/Detail';
 import { navigationRef } from './src/RootNavigation';

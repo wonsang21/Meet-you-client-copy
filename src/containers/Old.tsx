@@ -9,7 +9,7 @@ import Recommend from '../components/Recommend/Recommend';
 function mapStateToProps(state:any) {
     console.log(state,'컨테이너에 올더')
     return {
-        oldUser: state.UserPhoto.odlUser
+        userProFile: state.UserPhoto
     }
 }
 
