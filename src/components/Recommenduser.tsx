@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import styled from "styled-components/native";
+import styled from 'styled-components/native';
 import * as RootNavigation from '../RootNavigation';
 
 const StylePhoto = styled.Image`
@@ -9,17 +9,14 @@ const StylePhoto = styled.Image`
   height: 150px;
 `;
 const UserNameAge = styled.Text`
-   font-size: 11px
-     
+  font-size: 11px;
 `;
-
 
 const Gallery = styled.View`
   margin: auto;
   width: 50%;
   padding: 10px;
 `;
-
 
 const UserProfile = styled.Text`
   position: relative;
@@ -34,7 +31,6 @@ const ButtonContainer = styled.TouchableOpacity`
 
 interface Props {
   route: any;
-  
 }
 
 interface User {
@@ -43,21 +39,23 @@ interface User {
   age: React.ReactNode;
 }
 
-
-
-function DetailsScreen(fakedata: Props ) {
-    console.log(fakedata.route.params,'fake')
-    return (
-        <View style={{ flexDirection: "row" }}>
-            {fakedata.route.params.map((user: User, index: number) => (<Gallery key={index}>
-              <TouchableOpacity onPress={() => RootNavigation.navigate('Details', { user: user })}>
-                <StylePhoto source={{ uri: user.profile_photo }} />
-                <UserProfile>{user.username}</UserProfile>
-                <UserProfile>{user.age}</UserProfile>
-              </TouchableOpacity>
-            </Gallery>))}
-        </View>
-    );
+function DetailsScreen(fakedata: Props) {
+  console.log(fakedata.route.params, 'fake');
+  return (
+    <View style={{ flexDirection: 'row' }}>
+      {fakedata.route.params.map((user: User, index: number) => (
+        <Gallery key={index}>
+          <TouchableOpacity
+            onPress={() => RootNavigation.navigate('Details', { user: user })}
+          >
+            <StylePhoto source={{ uri: user.profile_photo }} />
+            <UserProfile>{user.username}</UserProfile>
+            <UserProfile>{user.age}</UserProfile>
+          </TouchableOpacity>
+        </Gallery>
+      ))}
+    </View>
+  );
 }
 
-export default DetailsScreen
+export default DetailsScreen;

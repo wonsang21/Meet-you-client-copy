@@ -4,7 +4,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import styled from "styled-components/native";
+
+import styled from 'styled-components/native';
+
 import oc from 'open-color';
 import axios from 'axios';
 import { connect, useSelector, useDispatch } from 'react-redux';
@@ -14,50 +16,75 @@ const StylePhoto = styled.Image`
   height: 300px;
 `;
 const UserNameAge = styled.Text`
-   font-size: 21px
+
+  font-size: 21px;
 `;
 const UserbloodAndaddress = styled.Text`
-   font-size: 17px
+  font-size: 17px;
 `;
 const Sadsfe = styled.Text`
-    background-color: mistyrose;
+  background-color: mistyrose;
 
-    padding: 5px;
-    margin: 10px;
-    border-radius: 50px;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 50px;
 `;
 
-
-
-function MyProfileScreen({ myprofile}) {
-  console.log(myprofile,'이거 뭐요')
+function MyProfileScreen({ myprofile }) {
+  console.log(myprofile, '이거 뭐요');
   return (
     <ScrollView style={styles.container}>
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
           <StylePhoto source={{ uri: myprofile.profile_photo }}></StylePhoto>
-          <UserNameAge>{myprofile.username}, {myprofile.nickname}, {myprofile.age}</UserNameAge>
-          <UserbloodAndaddress>{myprofile.address}, {myprofile.blood}</UserbloodAndaddress>
+          <UserNameAge>
+            {myprofile.username}, {myprofile.nickname}, {myprofile.age}
+          </UserNameAge>
+          <UserbloodAndaddress>
+            {myprofile.address}, {myprofile.blood}
+          </UserbloodAndaddress>
+
+
           <Text>{myprofile.gender}</Text>
           <Text>{myprofile.drinking}</Text>
           <Text>{myprofile.smoking}</Text>
           <Text>{myprofile.job}</Text>
           <Text>{myprofile.school}</Text>
         </View>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>  내 취미 는 {myprofile.hobbies.map((hobby: string, index: number) =>
-            <Sadsfe key={index} >{hobby}</Sadsfe>
-          )}</Text>
-          <Text>이상형 {myprofile.idealTypes.map((idealType: string, index: number) =>
-            <Sadsfe key={index}>{idealType}</Sadsfe>
-          )}</Text>
-          <Text> 내성격 {myprofile.personalities.map((personality: string, index: number) =>
-            <Sadsfe key={index}>{personality}</Sadsfe>
-          )}</Text>
+
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Text>
+            {' '}
+            내 취미 는{' '}
+            {myprofile.hobbies.map((hobby: string, index: number) => (
+              <Sadsfe key={index}>{hobby}</Sadsfe>
+            ))}
+          </Text>
+          <Text>
+            이상형{' '}
+            {myprofile.idealTypes.map((idealType: string, index: number) => (
+              <Sadsfe key={index}>{idealType}</Sadsfe>
+            ))}
+          </Text>
+          <Text>
+            {' '}
+            내성격{' '}
+            {myprofile.personalities.map(
+              (personality: string, index: number) => (
+                <Sadsfe key={index}>{personality}</Sadsfe>
+              ),
+            )}
+          </Text>
         </View>
       </View>
     </ScrollView>
-  )
+  );
+=======
+
 }
 
 const styles = StyleSheet.create({
@@ -70,9 +97,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: any) => {
   return {
-    myprofile: state.UserPhoto.myprofile
-  }
-}
-export default connect(mapStateToProps)(MyProfileScreen)
+
+    myprofile: state.UserPhoto.myprofile,
+  };
+};
+export default connect(mapStateToProps)(MyProfileScreen);
+
+
 
 // export default MyProfileScreen;

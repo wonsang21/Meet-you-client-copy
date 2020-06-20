@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
-import UserPhoto from './UserPhoto'
+
+import UserPhoto from './UserPhoto';
 // import Myprofile from './Myprofile'
 
 const rootReducer = combineReducers({
-    UserPhoto,
-    // Myprofile
-})
+  UserPhoto,
+  // Myprofile
+});
+
 
 export default rootReducer;
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;
