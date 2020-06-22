@@ -5,14 +5,15 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  AsyncStorage,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { withNavigation } from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
+import getEnvVars from '../../environments';
 
 interface AppProps {}
 
@@ -20,11 +21,9 @@ interface AppState {
   username: any;
   password: any;
 }
-
 class LogInScreen extends Component<AppProps, AppState> {
-  constructor(props: AppProps) {
+  constructor(props: Readonly<AppProps>) {
     super(props);
-    console.log('슈퍼프롭스', super(props));
     this.state = {
       username: '',
       password: '',
@@ -51,9 +50,11 @@ class LogInScreen extends Component<AppProps, AppState> {
   // 로그인 기능
   handleLogin = () => {
     const { username, password } = this.state;
+    const { apiUrl } = getEnvVars();
     if (username && password) {
+      console.log('env ip주소', apiUrl);
       axios
-        .post('http://172.30.1.15:5000/user/login', this.state) // 데이터 넘어감
+        .post(`http://${apiUrl}/user/login`, this.state) // 데이터 넘어감
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
@@ -105,7 +106,7 @@ class LogInScreen extends Component<AppProps, AppState> {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.props.navigation.navigate('SignUp')}
+            onPress={() => this.props.navigation.navigate('SmsAuth')}
           >
             <Text style={styles.buttonTitle}>회원가입</Text>
           </TouchableOpacity>

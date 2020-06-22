@@ -20,13 +20,10 @@ export interface Props {
   navigation?: any;
   dispatch: any;
   randomUser: any;
-
-
 }
 export interface State {
   userfile?: {};
 }
-
 
 class App extends Component<Props, State> {
   constructor(props: Readonly<Props>) {
@@ -72,5 +69,3 @@ const mapStateToProps = (state: any) => {
   };
 };
 export default connect(mapStateToProps)(App);
-=
-

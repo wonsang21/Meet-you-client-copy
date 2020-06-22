@@ -1,4 +1,3 @@
-
 let firstfake = [
   {
     username: '원건우',
@@ -36,5 +35,3 @@ let firstfake = [
   },
 ];
 export default firstfake;
-=======
-

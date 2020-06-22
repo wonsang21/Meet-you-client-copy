@@ -1,4 +1,3 @@
-
 import { connect } from 'react-redux';
 import Main from '../components/Main/Main';
 import { UserRE } from '../action';
@@ -29,7 +28,5 @@ function mapDispatchToProps(dispatch: any) {
           console.log(error, 'error');
         }),
   };
-=======
-
 }
 export default connect(mapreduxstate, mapDispatchToProps)(Main);

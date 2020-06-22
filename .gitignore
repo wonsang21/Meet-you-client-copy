@@ -339,3 +339,5 @@ typings/
 node_modules/**/*
 .expo/*
 npm-debug.*
+environments.tsx
+package-lock.json

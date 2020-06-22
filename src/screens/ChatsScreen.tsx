@@ -4,11 +4,20 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import styled from 'styled-components';
-import oc from 'open-color';
+
 import axios from 'axios';
+import { withNavigation } from 'react-navigation';
+
+import io from 'socket.io-client';
+import getEnvVars from '../../environments';
+
+interface ChatsProps {}
 
 class ChatsScreen extends React.Component {
+  constructor(props: Readonly<ChatsProps>) {
+    super(props);
+    this.state = {};
+  }
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -49,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatsScreen;
+export default withNavigation(ChatsScreen);

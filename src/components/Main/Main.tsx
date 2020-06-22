@@ -44,10 +44,7 @@ const Athoder = styled.Text`
   text-align: center;
   font-size: 11px;
   color: black;
-
 `;
-
-
 
 function Main({ userfile, onClick }: Props) {
   console.log(userfile, '요로로로로');
@@ -83,7 +80,6 @@ function Main({ userfile, onClick }: Props) {
       </ButtonContainer>
     </View>
   );
-
 }
 
 export default Main;
