@@ -21,6 +21,7 @@ import {
 } from 'react-native-material-dialog';
 import signUpData from '../signUpData/data';
 import axios from 'axios';
+import getEnvVars from '../../environments';
 
 interface SignUpProps {}
 
@@ -141,22 +142,6 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
         }
       }
     })();
-
-    //   axios({
-    //     // get 성공!
-    //     url: 'http://172.30.1.15:5000/user/information',
-    //     method: 'get',
-    //     headers: {
-    //       Authorization: `Basic ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndvbnNhbmcyMSIsInBhc3N3b3JkIjoiZDZiZWQ3MTBkYTNkNzRhZWEwMDZkOGFhYzE4YzVmODQ5OWE4MTYxZiIsImlhdCI6MTU5MjQxNDIxOCwiZXhwIjoxNTkyNTAwNjE4fQ.q4gxtGMQV9T8Uw2BS-BWEXuOp22rsu-ngfjzZW94wXs'}`,
-    //     },
-    //   })
-    //     .then((data) => {
-    //       console.log(data, 'axios');
-    //       alert('information');
-    //     })
-    //     .catch((error) => {
-    //       console.log(error, 'error');
-    //     });
   }
 
   componentDidUpdate() {
@@ -594,10 +579,12 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                 ) {
                   // 서버로 보내기
                   const data = this.state.userInfo;
+                  const { apiUrl } = getEnvVars();
                   console.log('data', data);
+                  console.log('env ip주소', dev);
 
                   axios({
-                    url: 'http://172.30.1.15:5000/user/signup', // 주소 맞음
+                    url: `http://${apiUrl}/user/signup`, // 주소 맞음
                     method: 'POST',
                     data: data,
                     headers: {
@@ -629,7 +616,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
           <View style={styles.submitbuttonArea}>
             <TouchableOpacity
               style={styles.submitbutton}
-              onPress={() => this.props.navigation.navigate('Login')} // 작동완료
+              onPress={() => this.props.navigation.navigate('LogIn')} // 작동완료
             >
               <Text style={styles.submitbuttonTitle}>로그인으로 돌아기기</Text>
             </TouchableOpacity>

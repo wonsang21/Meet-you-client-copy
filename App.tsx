@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import AuthLoadingScreen from './src/screens/AuthLoadingScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
-import MainScreen from './src/screens/MainScreen';
+import SmsAuthScreen from './src/screens/SmsAuthScreen';
 import ChatsScreen from './src/screens/ChatsScreen';
 import MiniGameScreen from './src/screens/MiniGameScreen';
 import MyProfileScreen from './src/screens/MyProfileScreen';
@@ -31,11 +31,13 @@ const store = createStore(
   window.devToolsExtension ? window.devToolsExtension() : (f) => f,
 );
 
-
-// //로그인, 회원가입 스택
+// //로그인, sms인증, 회원가입 스택
 const AuthStack = createStackNavigator({
   LogIn: {
     screen: LogInScreen,
+  },
+  SmsAuth: {
+    screen: SmsAuthScreen,
   },
   SignUp: {
     screen: SignUpScreen,
@@ -102,7 +104,7 @@ const RootStack = createSwitchNavigator(
 
 const AppContainer = createAppContainer(RootStack);
 
-interface AppProps { }
+interface AppProps {}
 
 interface AppState {
   userToken: string;
@@ -114,7 +116,6 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
-
     return (
       <Provider store={store}>
         <SafeAreaView style={{ flex: 1 }}>

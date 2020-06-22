@@ -13,6 +13,7 @@ import {
 import styled from 'styled-components';
 import oc from 'open-color';
 import axios from 'axios';
+import { withNavigation } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 
 class MiniGameScreen extends React.Component {
@@ -75,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MiniGameScreen;
+export default withNavigation(MiniGameScreen);

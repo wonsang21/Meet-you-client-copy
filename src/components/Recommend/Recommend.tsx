@@ -25,10 +25,8 @@ const Athoder = styled.Text`
   text-align: center;
   font-size: 11px;
   color: black;
-
 `;
 console.log(fakedata, '시바 잠만 이거 뭐야?');
-
 
 function Recommend() {
   return (
