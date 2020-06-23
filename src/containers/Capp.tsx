@@ -50,7 +50,7 @@ class App extends Component<Props, State> {
     return new Promise((resolve, reject) => {
       resolve(
         axios({
-          url: 'http://192.168.0.16:5000/user/information',
+          url: 'http://172.30.1.58:5000/user/information',
           method: 'get',
           headers: {
             Authorization: `Basic ${value}`,
@@ -74,7 +74,7 @@ class App extends Component<Props, State> {
   //로그인한 유저보다 나이가 많은 사람
   getOldUser() {
     axios({
-      url: 'http://192.168.0.16:5000/main/older',
+      url: 'http://172.30.1.58:5000/main/older',
       method: 'get',
       params: {
         userId: this.state.userId,
@@ -90,7 +90,7 @@ class App extends Component<Props, State> {
   //최근 가입한 사람
   getRecentlyUser() {
     axios({
-      url: 'http://192.168.0.16:5000/main/recently',
+      url: 'http://172.30.1.58:5000/main/recently',
       method: 'get',
       params: {
         userId: this.state.userId,
@@ -107,7 +107,7 @@ class App extends Component<Props, State> {
   getHobbyUser() {
     console.log('통과');
     axios({
-      url: 'http://192.168.0.16:5000/main/hobby',
+      url: 'http://172.30.1.58:5000/main/hobby',
       method: 'get',
       params: {
         userId: this.state.userId,
@@ -124,7 +124,7 @@ class App extends Component<Props, State> {
   getIdealTypeUser() {
     console.log('통과');
     axios({
-      url: 'http://192.168.0.16:5000/main/idealType',
+      url: 'http://172.30.1.58:5000/main/idealType',
       method: 'get',
       params: {
         userId: this.state.userId,
@@ -141,7 +141,7 @@ class App extends Component<Props, State> {
   getpersonalityUser() {
     console.log('통과');
     axios({
-      url: 'http://192.168.0.16:5000/main/personality',
+      url: 'http://172.30.1.58:5000/main/personality',
       method: 'get',
       params: {
         userId: this.state.userId,
