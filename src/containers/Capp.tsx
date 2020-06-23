@@ -11,7 +11,7 @@ import {
   idealTypeUser,
   personalityUser,
 } from '../action';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import axios from 'axios';
 import { UserProps } from '../reducers/type';
 
@@ -43,9 +43,9 @@ class App extends Component<Props, State> {
   }
   //초기에 로그인한 유저 정보와 랜던 유저의 정보 2명
   async getUserfile() {
-    // const value = await AsyncStorage.getItem('USERTOKEN');
-    const value =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuOFjCIsInBhc3N3b3JkIjoiYWQ5Y2U2NzEzZDA1N2MwYmIwOWU3OTcxZTcxNzhmMWFiODk1MGZjZCIsImlhdCI6MTU5Mjg1MTkxNCwiZXhwIjoxNTkyOTM4MzE0fQ.0IOMmrHFwcn60KOu6Zwv4FCddom4ptRa4Cr8TDg_KyI';
+    const value = await AsyncStorage.getItem('USERTOKEN');
+    // const value =
+    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuOFjCIsInBhc3N3b3JkIjoiYWQ5Y2U2NzEzZDA1N2MwYmIwOWU3OTcxZTcxNzhmMWFiODk1MGZjZCIsImlhdCI6MTU5Mjg1MTkxNCwiZXhwIjoxNTkyOTM4MzE0fQ.0IOMmrHFwcn60KOu6Zwv4FCddom4ptRa4Cr8TDg_KyI';
     console.log(value);
     return new Promise((resolve, reject) => {
       resolve(
