@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  AsyncStorage,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { ActivityIndicator, StatusBar, StyleSheet, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface AppProps {}
 
@@ -22,15 +17,13 @@ class AuthLoadingScreen extends React.Component {
   // usertoken을 가져오는 함수
   getUserToken = async () => {
     try {
-      // const value = await AsyncStorage.getItem('USERTOKEN');
-      const value =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuOFjCIsInBhc3N3b3JkIjoiYWQ5Y2U2NzEzZDA1N2MwYmIwOWU3OTcxZTcxNzhmMWFiODk1MGZjZCIsImlhdCI6MTU5MjY2MDYwNiwiZXhwIjoxNTkyNzQ3MDA2fQ.QJSt1TXtxcFdiQ8ZQ7ahPi2rXzeuQirvETwkE1rsKaU';
+      const value = await AsyncStorage.getItem('USERTOKEN');
       if (value !== null) {
         console.log('토큰있음', value);
-        this.props.navigation.navigate('Tab');
+        this.props.navigation.navigate('Tab'); // 메인으로 이동
       } else {
         console.log('토큰없음', value);
-        this.props.navigation.navigate('Auth');
+        this.props.navigation.navigate('Auth'); // 로그인, 회원가입 화면으로 이동
       }
     } catch (error) {
       console.log('getUserTokenError', error);
