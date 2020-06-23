@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -7,6 +13,7 @@ import {
 import styled from 'styled-components';
 import oc from 'open-color';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class MiniGameScreen extends React.Component {
   render() {
@@ -14,7 +21,16 @@ class MiniGameScreen extends React.Component {
       <ScrollView style={styles.container}>
         <View style={styles.wrapContent}>
           <View style={styles.content}>
-            <Text style={styles.title}>여기가 미니게임페이지 입니다.</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                AsyncStorage.clear();
+                alert('유저토큰 삭제 및 로그인유지 해제');
+                this.props.navigation.navigate('AuthLoading'); // 작동됨
+              }}
+            >
+              <Text style={styles.buttonTitle}>로그아웃 테스트</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.wrapContent}>
@@ -46,6 +62,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: wp('10%'),
+  },
+  button: {
+    backgroundColor: '#46c3ad',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonTitle: {
+    color: 'white',
   },
 });
 

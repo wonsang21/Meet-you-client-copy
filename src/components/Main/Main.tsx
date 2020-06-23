@@ -1,15 +1,7 @@
-import React,{Component} from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Button} from 'react-native';
-import styled from "styled-components/native";
-// import store from '../../store'
-import * as RootNavigation from '../../RootNavigation';
-
-interface Props {
-  userfile:undefined|any, 
-  onClick: () => void, 
-}
-
-
+import React from 'react';
+import { View, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
+import { UserProps } from '../../reducers/type';
 
 const Gallery = styled.View`
   margin: auto;
@@ -39,35 +31,52 @@ const Athoder = styled.Text`
   text-align: center;
   font-size: 11px;
   color: black;
-`
+`;
 
-function Main({ userfile, onClick }: Props) {
-
-  console.log(userfile,'요로로로로')
-  if (userfile.UserPhoto.userfile === undefined) {
-    console.log('통과')
-    return(
-      <View></View>
-    )
-  }
-        return (
-          <View style={{flexDirection: "column" }}>
-            <View style={{flexDirection: "row" }}>
-              {userfile.UserPhoto.userfile.map((user: { profile_photo: string; username: string; age: string; },index:number) => (
-                <Gallery key={index}>
-                  <TouchableOpacity onPress={() =>  RootNavigation.navigate('Details', { user: user })}>
-                    <StylePhoto source={{ uri: user.profile_photo }} />
-                    <UserProfile>{user.username}</UserProfile>
-                    <UserProfile>{user.age}</UserProfile>
-                  </TouchableOpacity>
-                </Gallery>
-              ))}
-            </View>
-            <ButtonContainer onPress={onClick}>
-              <Athoder >다른사람 추천</Athoder>
-            </ButtonContainer>
-          </View>
-        );
+interface Props {
+  userfile: {
+    UserPhoto: {
+      userfile: UserProps[];
+    };
+  };
+  onClick: () => void;
+  navigation: {
+    navigate: (route: string, params: { user: UserProps }) => void;
+  };
 }
 
-export default Main
+const Main: React.FunctionComponent<Props> = ({
+  userfile,
+  onClick,
+  navigation,
+}: Props) => {
+  if (userfile.UserPhoto.userfile === undefined) {
+    console.log('통과');
+    return <View></View>;
+  }
+
+  return (
+    <View style={{ flexDirection: 'column' }}>
+      <View style={{ flexDirection: 'row' }}>
+        {userfile.UserPhoto.userfile.map((user, index) => (
+          <Gallery key={index}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Details', { user: user });
+              }}
+            >
+              <StylePhoto source={{ uri: user.profile_Photo }} />
+              <UserProfile>{user.username}</UserProfile>
+              <UserProfile>{user.age}</UserProfile>
+            </TouchableOpacity>
+          </Gallery>
+        ))}
+      </View>
+      <ButtonContainer onPress={onClick}>
+        <Athoder>다른사람 추천</Athoder>
+      </ButtonContainer>
+    </View>
+  );
+};
+
+export default Main;
