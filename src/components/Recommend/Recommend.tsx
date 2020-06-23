@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { UserProps } from '../../reducers/type';
 
@@ -53,7 +53,7 @@ const Recommend: React.FunctionComponent<Props> = ({
       recentlyUser = key;
     }
   }
-
+  console.log(navigation, '이거 뭐야 리코멘드');
   return (
     <View>
       <Text>여기는 새로운 추천</Text>

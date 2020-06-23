@@ -37,7 +37,7 @@ function MyProfileScreen({ myprofile }) {
         <View
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
-          <StylePhoto source={{ uri: myprofile.profile_photo }}></StylePhoto>
+          <StylePhoto source={{ uri: myprofile.profile_Photo }}></StylePhoto>
           <UserNameAge>
             {myprofile.username}, {myprofile.nickname}, {myprofile.age}
           </UserNameAge>

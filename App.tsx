@@ -52,7 +52,7 @@ const MainStack = createStackNavigator({
   Details: {
     screen: Detail,
   },
-  Recommend: {
+  RecommendRander: {
     screen: RecommendRander,
   },
 });

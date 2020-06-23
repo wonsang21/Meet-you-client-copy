@@ -14,7 +14,7 @@ function mapDispatchToProps(dispatch: any, { userId }: any) {
   return {
     onClick: () =>
       axios({
-        url: 'http://192.168.0.16:5000/main/randomUsers',
+        url: 'http://172.30.1.58:5000/main/randomUsers',
         method: 'get',
         params: {
           userId: userId,
