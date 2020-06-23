@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import Main from '../components/Main/Main';
-import { UserRE } from '../action';
 import axios from 'axios';
 import { setUser } from '../action';
 function mapreduxstate(state: any) {
@@ -10,19 +9,20 @@ function mapreduxstate(state: any) {
   };
 }
 
-function mapDispatchToProps(dispatch: any) {
+function mapDispatchToProps(dispatch: any, { userId }: any) {
+  console.log(typeof userId, '임너감넝람너라무푸푸푸푸푸푸');
   return {
     onClick: () =>
       axios({
-        url: 'http://172.30.1.15:5000:5000/user/information',
+        url: 'http://192.168.0.16:5000/main/randomUsers',
         method: 'get',
-        headers: {
-          Authorization: `Basic ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuuCqOyekCIsInBhc3N3b3JkIjoiY2Q4M2ExYTdkZWUwNWVhYzg4NDI5YjU0NTg4ZTI1ZDRkMDZlYWU5OCIsImlhdCI6MTU5MjMwMzIzNCwiZXhwIjoxNTkyMzg5NjM0fQ.KVg8po1zCMF9QEbCBU4gSD2d6Uq9PDuAbermdZskYvM'}`,
+        params: {
+          userId: userId,
         },
       })
         .then((data) => {
           console.log(data, 'axios');
-          dispatch(setUser(data.data[1]));
+          dispatch(setUser(data.data));
         })
         .catch((error) => {
           console.log(error, 'error');

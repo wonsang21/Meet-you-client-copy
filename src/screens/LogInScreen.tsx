@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  AsyncStorage,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
