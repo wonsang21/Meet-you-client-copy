@@ -14,10 +14,10 @@ import MiniGameScreen from './src/screens/MiniGameScreen';
 import MyProfileScreen from './src/screens/MyProfileScreen';
 import rootReducer from './src/reducers/index';
 import { Provider } from 'react-redux';
-import Recommend from './src/components/Recommenduser';
+import RecommendRander from './src/components/RecommendRander';
 import Capp from './src/containers/Capp';
+import Main from './src/components/Main/Main';
 import Detail from './src/components/userfile/Detail';
-import { navigationRef } from './src/RootNavigation';
 import { createStore, compose } from 'redux';
 
 declare global {
@@ -52,8 +52,8 @@ const MainStack = createStackNavigator({
   Details: {
     screen: Detail,
   },
-  Recommend: {
-    screen: Recommend,
+  RecommendRander: {
+    screen: RecommendRander,
   },
 });
 
@@ -120,7 +120,7 @@ class App extends React.Component<AppProps, AppState> {
     return (
       <Provider store={store}>
         <SafeAreaView style={{ flex: 1 }}>
-          <AppContainer ref={navigationRef}></AppContainer>
+          <AppContainer></AppContainer>
         </SafeAreaView>
       </Provider>
     );

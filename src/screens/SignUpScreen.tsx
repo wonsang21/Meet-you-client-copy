@@ -26,7 +26,7 @@ import modalData from '../utils/modalData';
 import axios from 'axios';
 import getEnvVars from '../../environments';
 
-interface SignUpProps {}
+// interface SignUpProps {}
 
 interface SignUpState {
   userInfo: any;
