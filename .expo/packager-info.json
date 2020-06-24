@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 1096,
+  "packagerPid": 35950,
   "webpackServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://3h-tqz.anonymous.meet-you-client.exp.direct",
+  "packagerNgrokUrl": "https://packager.3h-tqz.anonymous.meet-you-client.exp.direct",
+  "ngrokPid": 58272
 }

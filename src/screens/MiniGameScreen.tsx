@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -35,7 +36,14 @@ class MiniGameScreen extends React.Component {
           </View>
         </View>
         <View style={styles.wrapContent}>
-          <View style={styles.content}></View>
+          <View style={styles.content}>
+            <Image
+              source={{
+                uri: 'f',
+              }}
+              style={{ width: 200, height: 200 }}
+            />
+          </View>
         </View>
         <View style={styles.wrapContent}>
           <View style={styles.content}></View>
