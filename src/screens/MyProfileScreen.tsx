@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -29,8 +35,8 @@ const Sadsfe = styled.Text`
   border-radius: 50px;
 `;
 
-function MyProfileScreen({ myprofile }) {
-  console.log(myprofile, '이거 뭐요');
+function MyProfileScreen({ myprofile, navigation }) {
+  console.log(myprofile, '이거 뭐요', navigation);
   return (
     <ScrollView style={styles.container}>
       <View style={{ flex: 1 }}>
@@ -77,6 +83,11 @@ function MyProfileScreen({ myprofile }) {
               ),
             )}
           </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ProFileChange', myprofile)}
+          >
+            <Text>프로필 수정</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
