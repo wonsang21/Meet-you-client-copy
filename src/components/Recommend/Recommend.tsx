@@ -26,7 +26,7 @@ interface Props {
   user: UserProps[] | [];
   userHobby: UserProps[];
   userfile: UserProps[];
-  // };
+
   navigation: {
     navigate: (route: string, params: any) => void;
   };

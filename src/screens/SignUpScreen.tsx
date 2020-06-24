@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  Picker,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -19,7 +20,9 @@ import {
   SinglePickerMaterialDialog,
   MultiPickerMaterialDialog,
 } from 'react-native-material-dialog';
-import signUpData from '../signUpData/data';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Location from 'expo-location';
+import modalData from '../utils/modalData';
 import axios from 'axios';
 import getEnvVars from '../../environments';
 
@@ -27,6 +30,10 @@ import getEnvVars from '../../environments';
 
 interface SignUpState {
   userInfo: any;
+  lat: number;
+  lng: number;
+  DatePickerVisble: boolean;
+  addressPickerVisble: boolean;
   singlePickerVisible_blood: boolean;
   singlePickerVisible_gender: boolean;
   singlePickerVisible_drinking: boolean;
@@ -52,6 +59,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
         username: '',
         password: '',
         age: '',
+        birth: '',
         address: '',
         profile_Photo: 'default',
         nickname: '',
@@ -65,6 +73,10 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
         personality: [],
         idealType: [],
       },
+      lat: 0,
+      lng: 0,
+      DatePickerVisble: false,
+      addressPickerVisble: false,
       singlePickerVisible_blood: false,
       singlePickerVisible_gender: false,
       singlePickerVisible_drinking: false,
@@ -89,17 +101,25 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
         },
       ],
     };
+    this.handleInputValue = this.handleInputValue.bind(this);
     this.handleInputSingleValue = this.handleInputSingleValue.bind(this);
     this.handleInputMultiValue = this.handleInputMultiValue.bind(this);
   }
 
-  // 회원가입 정보 입력부분을 state값에 넣어주는 함수
+  // userInfo이외에 값들을 state에 넣어주는 함수
+  handleInputValue = (name, value) => {
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  // userInfo 입력부분을 state값에 넣어주는 함수 (싱글모달)
   handleInputSingleValue = (name, value) => {
     this.setState({
       userInfo: { ...this.state.userInfo, [name]: value },
     });
   };
-  // 회원가입 정보 입력부분을 state값에 넣어주는 함수 (모달 다중 선택전용)
+  // userInfo 입력부분을 state값에 넣어주는 함수 (모달 다중 선택전용)
   handleInputMultiValue = (name, values: []) => {
     const arr: never[] = [];
     if (values.length !== 0) {
@@ -112,36 +132,94 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
     });
   };
 
+  // 생년월일을 한국 만나이로 계산해주는 함수
+  calculAge = (birth: string) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    if (month < 10) {
+      month = '0' + month;
+    }
+    if (day < 10) {
+      day = '0' + day;
+    }
+
+    let monthDay = month + day;
+    birth = birth.replace('-', '').replace('-', '');
+    const birthdayy = birth.substr(0, 4);
+    const birthdaymd = birth.substr(4, 4);
+    const age =
+      monthDay < Number(birthdaymd)
+        ? year - Number(birthdayy) - 1
+        : year - Number(birthdayy);
+
+    return String(age);
+  };
+
   // 갤러리에 있는 이미지를 불러와 state값에 넣어주는 함수
   pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    // 파일 접근 권한 (갤러리등)
+    if (Constants.platform?.android) {
+      const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+      if (status !== 'granted') {
+        alert('파일 및 갤러리 접근 권한이 꼭 필요합니다!!');
+      } else {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
 
-    //     console.log(result);
+        console.log(result);
 
-    if (!result.cancelled) {
-      this.setState({
-        userInfo: { ...this.state.userInfo, profile_Photo: result.uri },
-      });
+        if (!result.cancelled) {
+          this.setState({
+            userInfo: { ...this.state.userInfo, profile_Photo: result.uri },
+          });
+        }
+      }
     }
   };
 
-  // 앱 실행시 초기에 나오는 권한 설정 (카메라, 위치등)
-  componentDidMount() {
-    (async () => {
-      if (Constants.platform?.android) {
-        const {
-          status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== 'granted') {
-          alert('카메라 및 갤러리 접근 권한이 꼭 필요합니다!!');
-        }
+  // gps연동을 하여 현재위치(위도, 경도)를 state값에 넣어주는 함수
+  getLocation = async () => {
+    if (Constants.platform?.android) {
+      // gps사용 권한
+      const { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        alert('gps 접근 권한이 꼭 필요합니다!!');
+      } else {
+        const location = await Location.getCurrentPositionAsync({});
+        this.setState({
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+        });
+        console.log('현재위치 lat', this.state.lat);
+        console.log('현재위치 lng', this.state.lng);
+
+        // 여기서 구글 api로 위도, 경도를 보내서 현재 지역명으로 반환해온다.
+        axios
+          .get(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.lat},${this.state.lng}&language=ko&key=AIzaSyBIiDKf7S7Ve_Vsvi1B5LJAOrYtvvwMjgc`,
+          ) // 위도, 경도 google maps api로 보냄
+          .then((res) => {
+            console.log('반환된 주소값', res.data.results[4].formatted_address);
+            const result = res.data.results[4].formatted_address.slice(5); // 앞에 대한민국은 뺀다.
+            console.log('최종 주소값', result);
+            this.handleInputSingleValue('address', result);
+          })
+          .catch((error) => {
+            console.log('axios 구글 maps api 에러', error);
+          });
       }
-    })();
+    }
+  };
+
+  componentDidMount() {
+    console.log('componentDidMount', this.state);
   }
 
   componentDidUpdate() {
@@ -188,18 +266,59 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
               }
               secureTextEntry
             />
-            <TextInput
-              style={styles.textForm}
-              placeholder="age"
-              onChangeText={(txt) => this.handleInputSingleValue('age', txt)}
-            />
-            <TextInput
-              style={styles.textForm}
-              placeholder="address"
-              onChangeText={(txt) =>
-                this.handleInputSingleValue('address', txt)
-              }
-            />
+            <Text
+              style={styles.modaltextForm}
+              onPress={() => {
+                this.setState({
+                  DatePickerVisble: true,
+                });
+              }}
+            >
+              {this.state.DatePickerVisble === true ? (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={new Date()}
+                  mode="date"
+                  display="spinner"
+                  onChange={(event, selectedDate) => {
+                    if (selectedDate !== undefined) {
+                      let resultDate = '';
+                      resultDate += selectedDate.getFullYear(); // '2020'
+                      let month = selectedDate.getMonth() + 1;
+                      if (month < 10) {
+                        month = '0' + month;
+                      }
+                      resultDate += '-' + month; // '202007'
+                      let date = selectedDate.getDate();
+                      if (date < 10) {
+                        date = '0' + date;
+                      }
+                      resultDate += '-' + date; // '20200723'
+
+                      console.log('선택한 날짜', resultDate);
+                      this.handleInputSingleValue('birth', resultDate);
+                      this.handleInputSingleValue(
+                        'age',
+                        this.calculAge(resultDate),
+                      );
+                    }
+                    this.handleInputValue('DatePickerVisble', false);
+                    console.log(this.state.DatePickerVisble);
+                  }}
+                />
+              ) : (
+                ''
+              )}
+              {this.state.userInfo.birth === ''
+                ? '생년월일을 선택해주세요'
+                : `생년월일: ${this.state.userInfo.birth}`}
+            </Text>
+            <Text style={styles.modaltextForm} onPress={this.getLocation}>
+              {this.state.userInfo.address === ''
+                ? '지역을 선택해주세요'
+                : `지역: ${this.state.userInfo.address}`}
+            </Text>
+
             <TextInput
               style={styles.textForm}
               placeholder="nickname"
@@ -224,7 +343,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.blood.map((row, index) => ({
+              items={modalData.blood.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -261,7 +380,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.gender.map((row, index) => ({
+              items={modalData.gender.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -298,7 +417,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.drinking.map((row, index) => ({
+              items={modalData.drinking.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -335,7 +454,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.smoking.map((row, index) => ({
+              items={modalData.smoking.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -372,7 +491,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.job.map((row, index) => ({
+              items={modalData.job.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -407,7 +526,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.school.map((row, index) => ({
+              items={modalData.school.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -444,7 +563,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <MultiPickerMaterialDialog
               title={this.state.multiPickerSelectedTitle}
-              items={signUpData.hobby.map((row, index) => ({
+              items={modalData.hobby.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -481,7 +600,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <MultiPickerMaterialDialog
               title={this.state.multiPickerSelectedTitle}
-              items={signUpData.personality.map((row, index) => ({
+              items={modalData.personality.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -518,7 +637,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <MultiPickerMaterialDialog
               title={this.state.multiPickerSelectedTitle}
-              items={signUpData.personality.map((row, index) => ({
+              items={modalData.personality.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -581,7 +700,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                   const data = this.state.userInfo;
                   const { apiUrl } = getEnvVars();
                   console.log('data', data);
-                  console.log('env ip주소');
+                  console.log('env ip주소', apiUrl);
 
                   axios({
                     url: `http://${apiUrl}/user/signup`, // 주소 맞음
