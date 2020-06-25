@@ -8,6 +8,7 @@ export const USER_HOBBY = 'USER_HOBBY' as const;
 export const RECENTLY_USER = 'RECENTLY_USER' as const;
 export const IDEALTYPE_USER = 'IDEALTYPE_USER' as const;
 export const PERSONALITY_USER = 'PERSONALITY_USER' as const;
+export const MINIGAME_SCORE = 'MINIGAME_SCORE' as const;
 
 export const setUser = (user: UserProps[]): Action => ({
   type: SET_USER,
@@ -38,4 +39,8 @@ export const idealTypeUser = (user: UserProps[]): Action => ({
 export const personalityUser = (user: UserProps[]): Action => ({
   type: PERSONALITY_USER,
   user,
+});
+export const miniGameScore = (point: UserProps[]): Action => ({
+  type: PERSONALITY_USER,
+  point,
 });

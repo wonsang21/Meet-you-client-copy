@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -29,8 +35,8 @@ const Sadsfe = styled.Text`
   border-radius: 50px;
 `;
 
-function MyProfileScreen({ myprofile }) {
-  console.log(myprofile, '이거 뭐요');
+function MyProfileScreen({ myprofile, navigation }) {
+  console.log(myprofile, '이거 뭐요', navigation);
   return (
     <ScrollView style={styles.container}>
       <View style={{ flex: 1 }}>
@@ -58,25 +64,33 @@ function MyProfileScreen({ myprofile }) {
           <Text>
             {' '}
             내 취미 는{' '}
-            {myprofile.hobbies.map((hobby: string, index: number) => (
+            {myprofile.hobby.map((hobby: string, index: number) => (
               <Sadsfe key={index}>{hobby}</Sadsfe>
             ))}
           </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ProFileChange', myprofile)}
+          >
+            <Text>프로필 수정</Text>
+          </TouchableOpacity>
           <Text>
             이상형{' '}
-            {myprofile.idealTypes.map((idealType: string, index: number) => (
+            {myprofile.idealType.map((idealType: string, index: number) => (
               <Sadsfe key={index}>{idealType}</Sadsfe>
             ))}
           </Text>
           <Text>
             {' '}
             내성격{' '}
-            {myprofile.personalities.map(
-              (personality: string, index: number) => (
-                <Sadsfe key={index}>{personality}</Sadsfe>
-              ),
-            )}
+            {myprofile.personality.map((personality: string, index: number) => (
+              <Sadsfe key={index}>{personality}</Sadsfe>
+            ))}
           </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ProFileChange', myprofile)}
+          >
+            <Text>프로필 수정</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

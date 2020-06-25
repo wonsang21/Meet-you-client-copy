@@ -37,8 +37,8 @@ class App extends Component<Props, State> {
 
   async componentDidMount() {
     await this.getUserfile();
-    this.getRecentlyUser(), this.getOldUser();
     this.getHobbyUser();
+    this.getRecentlyUser(), this.getOldUser();
     this.getIdealTypeUser();
     this.getpersonalityUser();
   }
@@ -61,7 +61,7 @@ class App extends Component<Props, State> {
           .then((data) => {
             this.props.dispatch(myProFile(data.data[0]));
             this.props.dispatch(setUser(data.data[1]));
-            console.log(data, '이거 무얏');
+            console.log(data.data[0], '이거=================== 무얏');
             this.setState({
               userId: data.data[0].id,
             });
@@ -75,6 +75,7 @@ class App extends Component<Props, State> {
   }
   //로그인한 유저보다 나이가 많은 사람
   getOldUser() {
+    const { apiUrl } = getEnvVars();
     axios({
       url: `http://${apiUrl}/main/older`,
       method: 'get',
@@ -91,6 +92,7 @@ class App extends Component<Props, State> {
   }
   //최근 가입한 사람
   getRecentlyUser() {
+    const { apiUrl } = getEnvVars();
     axios({
       url: `http://${apiUrl}/main/recently`,
       method: 'get',
@@ -107,6 +109,7 @@ class App extends Component<Props, State> {
   }
   //취미 같은 사람
   getHobbyUser() {
+    const { apiUrl } = getEnvVars();
     console.log('통과');
     axios({
       url: `http://${apiUrl}/main/hobby`,
@@ -116,6 +119,7 @@ class App extends Component<Props, State> {
       },
     })
       .then((data) => {
+        console.log(data.data, '========f=f=f=f=f==f=ff==');
         this.props.dispatch(userHobby(data.data));
       })
       .catch((error) => {
@@ -124,6 +128,7 @@ class App extends Component<Props, State> {
   }
   //이상형  personalityUser
   getIdealTypeUser() {
+    const { apiUrl } = getEnvVars();
     console.log('통과');
     axios({
       url: `http://${apiUrl}/main/idealType`,
@@ -141,6 +146,7 @@ class App extends Component<Props, State> {
   }
   //성격이 비슷한
   getpersonalityUser() {
+    const { apiUrl } = getEnvVars();
     console.log('통과');
     axios({
       url: `http://${apiUrl}/main/personality`,

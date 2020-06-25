@@ -7,6 +7,7 @@ import {
   RECENTLY_USER,
   IDEALTYPE_USER,
   PERSONALITY_USER,
+  MINIGAME_SCORE,
 } from '../action';
 import { UserProps, UserState } from './type';
 
@@ -17,7 +18,8 @@ type Action =
   | { type: 'USER_HOBBY'; user: UserProps[] }
   | { type: 'RECENTLY_USER'; user: UserProps[] }
   | { type: 'IDEALTYPE_USER'; user: UserProps[] }
-  | { type: 'PERSONALITY_USER'; user: UserProps[] };
+  | { type: 'PERSONALITY_USER'; user: UserProps[] }
+  | { type: 'MINIGAME_SCORE'; point: number };
 const initialState: UserState = {
   user: [],
 };
@@ -37,7 +39,7 @@ const UserPhoto = (state = initialState, action: Action): UserState => {
 
     case OLD_USER:
       return Object.assign({}, state, {
-        odlUser: action.user,
+        oldUser: action.user,
       });
 
     case USER_HOBBY:
@@ -59,6 +61,10 @@ const UserPhoto = (state = initialState, action: Action): UserState => {
       return Object.assign({}, state, {
         personalityUser: action.user,
       });
+    // case MINIGAME_SCORE:
+    //   return Object.assign({}, state, {
+    //     personalityUser: action.point,
+    //   });
     default:
       return state;
   }

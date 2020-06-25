@@ -19,6 +19,7 @@ import Capp from './src/containers/Capp';
 import Main from './src/components/Main/Main';
 import Detail from './src/components/userfile/Detail';
 import { createStore, compose } from 'redux';
+import ProFileChange from './src/screens/ProFileChange';
 
 declare global {
   interface Window {
@@ -75,6 +76,9 @@ const MiniGameStack = createStackNavigator({
 const MyProfileStack = createStackNavigator({
   MyProfile: {
     screen: MyProfileScreen,
+  },
+  ProFileChange: {
+    screen: ProFileChange,
   },
 });
 

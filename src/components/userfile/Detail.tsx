@@ -26,7 +26,7 @@ interface Props {
 }
 
 function DetailsScreen({ navigation }: any) {
-  console.log(navigation.state.params.user, 'setting');
+  console.log(navigation.state.params.user, 'settifng');
   return (
     <ScrollView>
       <View style={{ flex: 1 }}>
@@ -57,7 +57,7 @@ function DetailsScreen({ navigation }: any) {
           <Text>
             {' '}
             내 취미 는{' '}
-            {navigation.state.params.user.hobbies.map(
+            {navigation.state.params.user.hobby.map(
               (hobby: string, index: number) => (
                 <Sadsfe key={index}>{hobby}</Sadsfe>
               ),
@@ -65,7 +65,7 @@ function DetailsScreen({ navigation }: any) {
           </Text>
           <Text>
             이상형{' '}
-            {navigation.state.params.user.idealTypes.map(
+            {navigation.state.params.user.idealType.map(
               (idealType: string, index: number) => (
                 <Sadsfe key={index}>{idealType}</Sadsfe>
               ),
@@ -74,7 +74,7 @@ function DetailsScreen({ navigation }: any) {
           <Text>
             {' '}
             내성격{' '}
-            {navigation.state.params.user.personalities.map(
+            {navigation.state.params.user.personality.map(
               (personality: string, index: number) => (
                 <Sadsfe key={index}>{personality}</Sadsfe>
               ),
