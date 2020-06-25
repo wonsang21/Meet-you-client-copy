@@ -16,9 +16,72 @@ import oc from 'open-color';
 import axios from 'axios';
 import { withNavigation } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
+import { connect } from 'react-redux';
+import getEnvVars from '../../environments';
+import { TextInput } from 'react-native-gesture-handler';
 
 class MiniGameScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      queiz: '',
+      solution: '',
+      result: '',
+    };
+  }
+
+  async componentDidMount() {
+    await this.getMiniGame();
+  }
+  //게임 받아오기
+  getMiniGame() {
+    const { apiUrl } = getEnvVars();
+    axios({
+      url: `http://${apiUrl}/mini/getMiniGame`,
+      method: 'get',
+      params: {
+        userId: this.props.user.id,
+      },
+    }).then((data) => {
+      console.log(data.data, 'aaaaaaaaaaaaaaaaaaaaaaaa');
+      this.setState({
+        queiz: data.data.problem,
+        solution: data.data.solution,
+        id: data.data.id,
+        result: '',
+      });
+    });
+  }
+  //input 업데이트
+  handleInputSingleValue = (result) => {
+    this.setState({
+      result: result,
+    });
+    if (this.state.result === '') {
+      console.log('d');
+    }
+  };
+  //서버에 정답 보내기
+  postresult() {
+    const { apiUrl } = getEnvVars();
+    const data = {
+      userId: this.props.user.id,
+      completedMiniGameId: this.state.id,
+    };
+    axios({
+      url: `http://${apiUrl}/mini/completedMiniGame`, // 주소 맞음
+      method: 'POST',
+      data: data,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((data) => {
+      this.getMiniGame();
+    });
+  }
+
   render() {
+    console.log('=l======1f11===', this.state, '=111===========');
     return (
       <ScrollView style={styles.container}>
         <View style={styles.wrapContent}>
@@ -37,16 +100,26 @@ class MiniGameScreen extends React.Component {
         </View>
         <View style={styles.wrapContent}>
           <View style={styles.content}>
-            <Image
-              source={{
-                uri: 'f',
+            <Text>{this.state.queiz}</Text>
+            <TextInput
+              placeholder="정답을 입력하세요"
+              onChangeText={(txt) => this.handleInputSingleValue(txt)}
+            >
+              {this.state.result === '' ? '' : this.state.result}
+            </TextInput>
+            <TouchableOpacity
+              onPress={() => {
+                const { result, solution } = this.state;
+                if (result === solution) {
+                  this.postresult();
+                } else {
+                  alert('땡~');
+                }
               }}
-              style={{ width: 200, height: 200 }}
-            />
+            >
+              <Text>보내자</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.wrapContent}>
-          <View style={styles.content}></View>
         </View>
       </ScrollView>
     );
@@ -83,5 +156,10 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-
-export default withNavigation(MiniGameScreen);
+const mapStateToProps = (state: any) => {
+  console.log('=============', state.UserPhoto.myprofile, '============');
+  return {
+    user: state.UserPhoto.myprofile,
+  };
+};
+export default connect(mapStateToProps)(MiniGameScreen);
