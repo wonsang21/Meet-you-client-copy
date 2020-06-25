@@ -23,7 +23,7 @@ class ChatsScreen extends React.Component {
       <ScrollView style={styles.container}>
         <View style={styles.wrapContent}>
           <View style={styles.content}>
-            <Text style={styles.title}>여기가 채팅페이지 입니다.</Text>
+            <Text style={styles.title}>여기가 채팅리스트 페이지 입니다.</Text>
           </View>
         </View>
         <View style={styles.wrapContent}>

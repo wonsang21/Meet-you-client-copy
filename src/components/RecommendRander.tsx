@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
 import styled from 'styled-components/native';
 import { UserProps } from '../reducers/type';
 
@@ -37,7 +37,11 @@ interface Props {
 const RecommendRander: React.FunctionComponent<Props> = ({
   navigation,
 }: Props) => {
-  console.log(navigation.state.params, 'fakediddddddddddddddddddddddd');
+  // console.log(
+  //   '===========',
+  //   navigation.state.params,
+  //   'fakediddddddddddddddddddddddd',
+  // );
   return navigation.state.params ? (
     <ScrollView>
       <Photo style={{ flexDirection: 'row' }}>
@@ -53,6 +57,9 @@ const RecommendRander: React.FunctionComponent<Props> = ({
           </Gallery>
         ))}
       </Photo>
+      <TouchableOpacity>
+        <Text>다른 유저 받기 Point -1000</Text>
+      </TouchableOpacity>
     </ScrollView>
   ) : (
     <View></View>

@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import Main from '../components/Main/Main';
 import axios from 'axios';
 import { setUser } from '../action';
+import getEnvVars from '../../environments';
 function mapreduxstate(state: any) {
   console.log(state, '이거 컨태이너');
   return {
@@ -10,11 +11,12 @@ function mapreduxstate(state: any) {
 }
 
 function mapDispatchToProps(dispatch: any, { userId }: any) {
+  const { apiUrl } = getEnvVars();
   console.log(typeof userId, '임너감넝람너라무푸푸푸푸푸푸');
   return {
     onClick: () =>
       axios({
-        url: 'http://192.168.0.16:5000/main/randomUsers',
+        url: `http://${apiUrl}/main/randomUsers`,
         method: 'get',
         params: {
           userId: userId,

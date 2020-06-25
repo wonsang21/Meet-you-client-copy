@@ -56,9 +56,6 @@ const MainStack = createStackNavigator({
   RecommendRander: {
     screen: RecommendRander,
   },
-  ProFileChange: {
-    screen: ProFileChange,
-  },
 });
 
 // 채팅 스택
@@ -79,6 +76,9 @@ const MiniGameStack = createStackNavigator({
 const MyProfileStack = createStackNavigator({
   MyProfile: {
     screen: MyProfileScreen,
+  },
+  ProFileChange: {
+    screen: ProFileChange,
   },
 });
 
@@ -120,6 +120,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
+    console.disableYellowBox = true; // 앱이나 콘솔화면에 노란색 경고문구 뜨는거 꺼주는 코드
     return (
       <Provider store={store}>
         <SafeAreaView style={{ flex: 1 }}>

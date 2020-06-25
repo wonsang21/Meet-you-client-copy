@@ -12,6 +12,7 @@ import {
   personalityUser,
 } from '../action';
 import { View, AsyncStorage } from 'react-native';
+import getEnvVars from '../../environments';
 import axios from 'axios';
 import { UserProps } from '../reducers/type';
 
@@ -36,13 +37,14 @@ class App extends Component<Props, State> {
 
   async componentDidMount() {
     await this.getUserfile();
-    this.getRecentlyUser(), this.getOldUser();
     this.getHobbyUser();
+    this.getRecentlyUser(), this.getOldUser();
     this.getIdealTypeUser();
     this.getpersonalityUser();
   }
   //초기에 로그인한 유저 정보와 랜던 유저의 정보 2명
   async getUserfile() {
+    const { apiUrl } = getEnvVars();
     const value = await AsyncStorage.getItem('USERTOKEN');
     // const value =
     //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuOFjCIsInBhc3N3b3JkIjoiYWQ5Y2U2NzEzZDA1N2MwYmIwOWU3OTcxZTcxNzhmMWFiODk1MGZjZCIsImlhdCI6MTU5Mjg1MTkxNCwiZXhwIjoxNTkyOTM4MzE0fQ.0IOMmrHFwcn60KOu6Zwv4FCddom4ptRa4Cr8TDg_KyI';
@@ -50,7 +52,7 @@ class App extends Component<Props, State> {
     return new Promise((resolve, reject) => {
       resolve(
         axios({
-          url: 'http://192.168.0.16:5000/user/information',
+          url: `http://${apiUrl}/user/information`,
           method: 'get',
           headers: {
             Authorization: `Basic ${value}`,
@@ -59,7 +61,7 @@ class App extends Component<Props, State> {
           .then((data) => {
             this.props.dispatch(myProFile(data.data[0]));
             this.props.dispatch(setUser(data.data[1]));
-            console.log(data, '이거 무얏');
+            console.log(data.data[0], '이거=================== 무얏');
             this.setState({
               userId: data.data[0].id,
             });
@@ -73,8 +75,9 @@ class App extends Component<Props, State> {
   }
   //로그인한 유저보다 나이가 많은 사람
   getOldUser() {
+    const { apiUrl } = getEnvVars();
     axios({
-      url: 'http://192.168.0.16:5000/main/older',
+      url: `http://${apiUrl}/main/older`,
       method: 'get',
       params: {
         userId: this.state.userId,
@@ -89,8 +92,9 @@ class App extends Component<Props, State> {
   }
   //최근 가입한 사람
   getRecentlyUser() {
+    const { apiUrl } = getEnvVars();
     axios({
-      url: 'http://192.168.0.16:5000/main/recently',
+      url: `http://${apiUrl}/main/recently`,
       method: 'get',
       params: {
         userId: this.state.userId,
@@ -105,15 +109,17 @@ class App extends Component<Props, State> {
   }
   //취미 같은 사람
   getHobbyUser() {
+    const { apiUrl } = getEnvVars();
     console.log('통과');
     axios({
-      url: 'http://192.168.0.16:5000/main/hobby',
+      url: `http://${apiUrl}/main/hobby`,
       method: 'get',
       params: {
         userId: this.state.userId,
       },
     })
       .then((data) => {
+        console.log(data.data, '========f=f=f=f=f==f=ff==');
         this.props.dispatch(userHobby(data.data));
       })
       .catch((error) => {
@@ -122,9 +128,10 @@ class App extends Component<Props, State> {
   }
   //이상형  personalityUser
   getIdealTypeUser() {
+    const { apiUrl } = getEnvVars();
     console.log('통과');
     axios({
-      url: 'http://192.168.0.16:5000/main/idealType',
+      url: `http://${apiUrl}/main/idealType`,
       method: 'get',
       params: {
         userId: this.state.userId,
@@ -139,9 +146,10 @@ class App extends Component<Props, State> {
   }
   //성격이 비슷한
   getpersonalityUser() {
+    const { apiUrl } = getEnvVars();
     console.log('통과');
     axios({
-      url: 'http://192.168.0.16:5000/main/personality',
+      url: `http://${apiUrl}/main/personality`,
       method: 'get',
       params: {
         userId: this.state.userId,
