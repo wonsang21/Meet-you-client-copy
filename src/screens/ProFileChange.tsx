@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  Picker,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -19,7 +20,9 @@ import {
   SinglePickerMaterialDialog,
   MultiPickerMaterialDialog,
 } from 'react-native-material-dialog';
-import signUpData from '../signUpData/data';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Location from 'expo-location';
+import modalData from '../utils/modalData';
 import axios from 'axios';
 import getEnvVars from '../../environments';
 
@@ -27,6 +30,10 @@ import getEnvVars from '../../environments';
 
 interface SignUpState {
   userInfo: any;
+  lat: number;
+  lng: number;
+  DatePickerVisble: boolean;
+  addressPickerVisble: boolean;
   singlePickerVisible_blood: boolean;
   singlePickerVisible_gender: boolean;
   singlePickerVisible_drinking: boolean;
@@ -44,11 +51,15 @@ interface SignUpState {
   multiPickerSelectedItems: any;
 }
 
-class SignUpScreen extends Component<SignUpProps, SignUpState> {
+class ProFileChange extends Component<SignUpProps, SignUpState> {
   constructor(props: SignUpProps) {
     super(props);
     this.state = {
       userInfo: this.props.navigation.state.params,
+      lat: 0,
+      lng: 0,
+      DatePickerVisble: false,
+      addressPickerVisble: false,
       singlePickerVisible_blood: false,
       singlePickerVisible_gender: false,
       singlePickerVisible_drinking: false,
@@ -73,17 +84,25 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
         },
       ],
     };
+    this.handleInputValue = this.handleInputValue.bind(this);
     this.handleInputSingleValue = this.handleInputSingleValue.bind(this);
     this.handleInputMultiValue = this.handleInputMultiValue.bind(this);
   }
 
-  // 회원가입 정보 입력부분을 state값에 넣어주는 함수
+  // userInfo이외에 값들을 state에 넣어주는 함수
+  handleInputValue = (name, value) => {
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  // userInfo 입력부분을 state값에 넣어주는 함수 (싱글모달)
   handleInputSingleValue = (name, value) => {
     this.setState({
       userInfo: { ...this.state.userInfo, [name]: value },
     });
   };
-  // 회원가입 정보 입력부분을 state값에 넣어주는 함수 (모달 다중 선택전용)
+  // userInfo 입력부분을 state값에 넣어주는 함수 (모달 다중 선택전용)
   handleInputMultiValue = (name, values: []) => {
     const arr: never[] = [];
     if (values.length !== 0) {
@@ -96,36 +115,94 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
     });
   };
 
+  // 생년월일을 한국 만나이로 계산해주는 함수
+  calculAge = (birth: string) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    if (month < 10) {
+      month = '0' + month;
+    }
+    if (day < 10) {
+      day = '0' + day;
+    }
+
+    const monthDay = month + day;
+    birth = birth.replace('-', '').replace('-', '');
+    const birthdayy = birth.substr(0, 4);
+    const birthdaymd = birth.substr(4, 4);
+    const age =
+      monthDay < Number(birthdaymd)
+        ? year - Number(birthdayy) - 1
+        : year - Number(birthdayy);
+
+    return String(age);
+  };
+
   // 갤러리에 있는 이미지를 불러와 state값에 넣어주는 함수
   pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    // 파일 접근 권한 (갤러리등)
+    if (Constants.platform?.android) {
+      const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+      if (status !== 'granted') {
+        alert('파일 및 갤러리 접근 권한이 꼭 필요합니다!!');
+      } else {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
 
-    //     console.log(result);
+        console.log(result);
 
-    if (!result.cancelled) {
-      this.setState({
-        userInfo: { ...this.state.userInfo, profile_Photo: result.uri },
-      });
+        if (!result.cancelled) {
+          this.setState({
+            userInfo: { ...this.state.userInfo, profile_Photo: result.uri },
+          });
+        }
+      }
     }
   };
 
-  // 앱 실행시 초기에 나오는 권한 설정 (카메라, 위치등)
-  componentDidMount() {
-    (async () => {
-      if (Constants.platform?.android) {
-        const {
-          status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== 'granted') {
-          alert('카메라 및 갤러리 접근 권한이 꼭 필요합니다!!');
-        }
+  // gps연동을 하여 현재위치(위도, 경도)를 state값에 넣어주는 함수
+  getLocation = async () => {
+    if (Constants.platform?.android) {
+      // gps사용 권한
+      const { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        alert('gps 접근 권한이 꼭 필요합니다!!');
+      } else {
+        const location = await Location.getCurrentPositionAsync({});
+        this.setState({
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+        });
+        console.log('현재위치 lat', this.state.lat);
+        console.log('현재위치 lng', this.state.lng);
+
+        // 여기서 구글 api로 위도, 경도를 보내서 현재 지역명으로 반환해온다.
+        axios
+          .get(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.lat},${this.state.lng}&language=ko&key=AIzaSyBIiDKf7S7Ve_Vsvi1B5LJAOrYtvvwMjgc`,
+          ) // 위도, 경도 google maps api로 보냄
+          .then((res) => {
+            console.log('반환된 주소값', res.data.results[4].formatted_address);
+            const result = res.data.results[4].formatted_address.slice(5); // 앞에 대한민국은 뺀다.
+            console.log('최종 주소값', result);
+            this.handleInputSingleValue('address', result);
+          })
+          .catch((error) => {
+            console.log('axios 구글 maps api 에러', error);
+          });
       }
-    })();
+    }
+  };
+
+  componentDidMount() {
+    console.log('componentDidMount', this.state, '========');
   }
 
   componentDidUpdate() {
@@ -133,12 +210,11 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
   }
 
   render() {
-    console.log('=====', this.state.userInfo, 'prssps');
     return (
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.titleArea}>
-            <Text style={styles.title}>회원가입</Text>
+            <Text style={styles.title}>프로필 수정</Text>
           </View>
           <View style={styles.profileplaceholder}>
             {this.state.userInfo.profile_Photo && (
@@ -153,43 +229,34 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
               style={styles.submitbutton}
               onPress={this.pickImage}
             >
-              <Text style={styles.submitbuttonTitle}>프로필 사진 추가</Text>
+              <Text style={styles.submitbuttonTitle}>프로필 사진 변경</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.formArea}>
+            <Text style={styles.textForm}>
+              ID: {this.state.userInfo.username}
+            </Text>
             <TextInput
               style={styles.textForm}
-              value={this.state.userInfo.username}
-              editable={false}
-              onChangeText={(txt) =>
-                this.handleInputSingleValue('username', txt)
-              }
-            />
-            <TextInput
-              style={styles.textForm}
-              placeholder="password"
+              placeholder="New Password"
               onChangeText={(txt) =>
                 this.handleInputSingleValue('password', txt)
               }
               secureTextEntry
             />
+            <Text style={styles.modaltextForm}>
+              생년월일: {this.state.userInfo.age}
+            </Text>
+            <Text style={styles.modaltextForm} onPress={this.getLocation}>
+              {this.state.userInfo.address === ''
+                ? '지역을 선택해주세요'
+                : `지역: ${this.state.userInfo.address}`}
+            </Text>
+
             <TextInput
               style={styles.textForm}
-              value={this.state.userInfo.age}
-              editable={false}
-              onChangeText={(txt) => this.handleInputSingleValue('age', txt)}
-            />
-            <TextInput
-              style={styles.textForm}
-              value={this.state.userInfo.address}
-              onChangeText={(txt) =>
-                this.handleInputSingleValue('address', txt)
-              }
-            />
-            <TextInput
-              style={styles.textForm}
-              value={this.state.userInfo.nickname}
+              placeholder="nickname"
               onChangeText={(txt) =>
                 this.handleInputSingleValue('nickname', txt)
               }
@@ -211,7 +278,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.blood.map((row, index) => ({
+              items={modalData.blood.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -232,12 +299,23 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                 );
               }}
             />
-            <Text style={styles.modaltextForm}>
-              성별: {this.state.userInfo.gender}
+            <Text
+              style={styles.modaltextForm}
+              onPress={() => {
+                this.setState({
+                  singlePickerVisible_gender: true,
+                  singlePickerTitle: 'gender',
+                  singlePickerSelectedTitle: '성별을 선택해주세요',
+                });
+              }}
+            >
+              {this.state.userInfo.gender === ''
+                ? '성별을 선택해주세요'
+                : `성별: ${this.state.userInfo.gender}`}
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.gender.map((row, index) => ({
+              items={modalData.gender.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -274,7 +352,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.drinking.map((row, index) => ({
+              items={modalData.drinking.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -311,7 +389,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.smoking.map((row, index) => ({
+              items={modalData.smoking.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -348,7 +426,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.job.map((row, index) => ({
+              items={modalData.job.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -383,7 +461,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
             </Text>
             <SinglePickerMaterialDialog
               title={this.state.singlePickerSelectedTitle}
-              items={signUpData.school.map((row, index) => ({
+              items={modalData.school.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -414,13 +492,13 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                 });
               }}
             >
-              {this.state.userInfo.hobbies.length === 0
+              {this.state.userInfo.hobby.length === 0
                 ? '취미를 선택해주세요'
-                : `취미: ${this.state.userInfo.hobbies.join(', ')}`}
+                : `취미: ${this.state.userInfo.hobby.join(', ')}`}
             </Text>
             <MultiPickerMaterialDialog
               title={this.state.multiPickerSelectedTitle}
-              items={signUpData.hobby.map((row, index) => ({
+              items={modalData.hobby.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -451,13 +529,13 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                 });
               }}
             >
-              {this.state.userInfo.personalities.length === 0
+              {this.state.userInfo.personality.length === 0
                 ? '나의 성격을 선택해주세요'
-                : `성격: ${this.state.userInfo.personalities.join(', ')}`}
+                : `성격: ${this.state.userInfo.personality.join(', ')}`}
             </Text>
             <MultiPickerMaterialDialog
               title={this.state.multiPickerSelectedTitle}
-              items={signUpData.personality.map((row, index) => ({
+              items={modalData.personality.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -488,13 +566,13 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                 });
               }}
             >
-              {this.state.userInfo.idealTypes.length === 0
+              {this.state.userInfo.idealType.length === 0
                 ? '이상형을 선택해주세요'
-                : `이상형: ${this.state.userInfo.idealTypes.join(', ')}`}
+                : `이상형: ${this.state.userInfo.idealType.join(', ')}`}
             </Text>
             <MultiPickerMaterialDialog
               title={this.state.multiPickerSelectedTitle}
-              items={signUpData.personality.map((row, index) => ({
+              items={modalData.personality.map((row, index) => ({
                 value: index,
                 label: row,
               }))}
@@ -537,6 +615,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                   personality,
                   idealType,
                 } = this.state.userInfo;
+
                 if (
                   username &&
                   password &&
@@ -555,12 +634,13 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                 ) {
                   // 서버로 보내기
                   const data = this.state.userInfo;
+                  console.log('-------------------');
                   const { apiUrl } = getEnvVars();
-                  console.log('data', data);
-                  console.log('env ip주소');
+                  console.log('data============', data);
+                  console.log('env ip주소', apiUrl);
 
                   axios({
-                    url: `http://${apiUrl}/user/signup`, // 주소 맞음
+                    url: `http://${apiUrl}/user/profile`, // 주소 맞음
                     method: 'POST',
                     data: data,
                     headers: {
@@ -568,12 +648,12 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                     },
                   })
                     .then((res) => {
-                      if (res.status === 409) {
+                      if (res.status === 404) {
                         alert('이미 가입된 아이디입니다.');
-                      } else if (res.status === 201) {
+                      } else if (res.status === 200) {
                         console.log(res.data);
-                        alert('회원가입 완료');
-                        this.props.navigation.navigate('LogIn'); // 로그인페이지로 이동
+                        alert('회원정보 수정 완료');
+                        this.props.navigation.navigate('MyProfile'); // 로그인페이지로 이동
                       } else {
                         alert('회원가입 실패');
                       }
@@ -586,15 +666,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
                 }
               }}
             >
-              <Text style={styles.submitbuttonTitle}>회원가입</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.submitbuttonArea}>
-            <TouchableOpacity
-              style={styles.submitbutton}
-              onPress={() => this.props.navigation.navigate('LogIn')} // 작동완료
-            >
-              <Text style={styles.submitbuttonTitle}>로그인으로 돌아기기</Text>
+              <Text style={styles.submitbuttonTitle}>회원정보 수정</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -603,7 +675,7 @@ class SignUpScreen extends Component<SignUpProps, SignUpState> {
   }
 }
 
-export default withNavigation(SignUpScreen);
+export default withNavigation(ProFileChange);
 
 const styles = StyleSheet.create({
   container: {

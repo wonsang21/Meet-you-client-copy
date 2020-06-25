@@ -64,24 +64,27 @@ function MyProfileScreen({ myprofile, navigation }) {
           <Text>
             {' '}
             내 취미 는{' '}
-            {myprofile.hobbies.map((hobby: string, index: number) => (
+            {myprofile.hobby.map((hobby: string, index: number) => (
               <Sadsfe key={index}>{hobby}</Sadsfe>
             ))}
           </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ProFileChange', myprofile)}
+          >
+            <Text>프로필 수정</Text>
+          </TouchableOpacity>
           <Text>
             이상형{' '}
-            {myprofile.idealTypes.map((idealType: string, index: number) => (
+            {myprofile.idealType.map((idealType: string, index: number) => (
               <Sadsfe key={index}>{idealType}</Sadsfe>
             ))}
           </Text>
           <Text>
             {' '}
             내성격{' '}
-            {myprofile.personalities.map(
-              (personality: string, index: number) => (
-                <Sadsfe key={index}>{personality}</Sadsfe>
-              ),
-            )}
+            {myprofile.personality.map((personality: string, index: number) => (
+              <Sadsfe key={index}>{personality}</Sadsfe>
+            ))}
           </Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('ProFileChange', myprofile)}
