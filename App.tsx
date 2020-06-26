@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import * as React from 'react';
 import { SafeAreaView } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator, Header } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import AuthLoadingScreen from './src/screens/AuthLoadingScreen';
@@ -46,17 +46,33 @@ const AuthStack = createStackNavigator({
 });
 
 // 메인 스택
-const MainStack = createStackNavigator({
-  Main: {
-    screen: Capp,
+const MainStack = createStackNavigator(
+  {
+    Main: {
+      screen: Capp,
+    },
+    Details: {
+      screen: Detail,
+    },
+    RecommendRander: {
+      screen: RecommendRander,
+    },
   },
-  Details: {
-    screen: Detail,
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#28F1A6',
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      headerTintColor: '#333333',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        color: '#ffffff',
+      },
+    },
   },
-  RecommendRander: {
-    screen: RecommendRander,
-  },
-});
+);
 
 // 채팅 스택
 const ChatsStack = createStackNavigator({

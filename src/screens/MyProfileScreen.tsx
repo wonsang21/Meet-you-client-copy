@@ -10,7 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import styled from 'styled-components/native';
 
 import oc from 'open-color';
@@ -36,26 +36,27 @@ const Sadsfe = styled.Text`
 `;
 
 function MyProfileScreen({ myprofile, navigation }) {
-  console.log(myprofile, '이거 뭐요', navigation);
+  const userProfile = useSelector((state) => state.UserPhoto.myprofile);
+  console.log('이거 뭐f요', myprofile, '======a=');
   return (
     <ScrollView style={styles.container}>
       <View style={{ flex: 1 }}>
         <View
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
-          <StylePhoto source={{ uri: myprofile.profile_Photo }}></StylePhoto>
+          <StylePhoto source={{ uri: userProfile.profile_Photo }}></StylePhoto>
           <UserNameAge>
-            {myprofile.username}, {myprofile.nickname}, {myprofile.age}
+            {userProfile.username}, {userProfile.nickname}, {userProfile.age}
           </UserNameAge>
           <UserbloodAndaddress>
-            {myprofile.address}, {myprofile.blood}
+            {userProfile.address}, {userProfile.blood}
           </UserbloodAndaddress>
 
-          <Text>{myprofile.gender}</Text>
-          <Text>{myprofile.drinking}</Text>
-          <Text>{myprofile.smoking}</Text>
-          <Text>{myprofile.job}</Text>
-          <Text>{myprofile.school}</Text>
+          <Text>{userProfile.gender}</Text>
+          <Text>{userProfile.drinking}</Text>
+          <Text>{userProfile.smoking}</Text>
+          <Text>{userProfile.job}</Text>
+          <Text>{userProfile.school}</Text>
         </View>
 
         <View
@@ -64,30 +65,39 @@ function MyProfileScreen({ myprofile, navigation }) {
           <Text>
             {' '}
             내 취미 는{' '}
-            {myprofile.hobby.map((hobby: string, index: number) => (
+            {userProfile.hobby.map((hobby: string, index: number) => (
               <Sadsfe key={index}>{hobby}</Sadsfe>
             ))}
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('ProFileChange', myprofile)}
+            onPress={() => navigation.navigate('ProFileChange', userProfile)}
           >
             <Text>프로필 수정</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              AsyncStorage.clear();
+              alert('유저토큰 삭제 및 로그인유지 해제');
+              navigation.navigate('AuthLoading'); // 작동됨
+            }}
+          >
+            <Text>로그아웃 테스트</Text>
+          </TouchableOpacity>
           <Text>
             이상형{' '}
-            {myprofile.idealType.map((idealType: string, index: number) => (
+            {userProfile.idealType.map((idealType: string, index: number) => (
               <Sadsfe key={index}>{idealType}</Sadsfe>
             ))}
           </Text>
           <Text>
             {' '}
             내성격{' '}
-            {myprofile.personality.map((personality: string, index: number) => (
+            {userProfile.personality.map((personality: string, index: number) => (
               <Sadsfe key={index}>{personality}</Sadsfe>
             ))}
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('ProFileChange', myprofile)}
+            onPress={() => navigation.navigate('ProFileChange', userProfile)}
           >
             <Text>프로필 수정</Text>
           </TouchableOpacity>
@@ -105,11 +115,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: any) => {
-  return {
-    myprofile: state.UserPhoto.myprofile,
-  };
-};
-export default connect(mapStateToProps)(MyProfileScreen);
+// const mapStateToProps = (state: any) => {
+//   return {
+//     aa: state.UserPhoto.myprofile,
+//   };
+// };
+// export default connect(mapStateToProps)(MyProfileScreen);
 
-// export default MyProfileScreen;
+export default MyProfileScreen;

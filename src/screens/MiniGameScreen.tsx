@@ -19,7 +19,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import getEnvVars from '../../environments';
 import { TextInput } from 'react-native-gesture-handler';
-
+import { AntDesign } from '@expo/vector-icons';
 class MiniGameScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -81,51 +81,86 @@ class MiniGameScreen extends React.Component {
   }
 
   render() {
-    console.log('=l======1f11===', this.state, '=111===========');
+    console.log('=l======1f11dcz===', this.props, '=11x1=ㅊ==========');
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.wrapContent}>
-          <View style={styles.content}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                AsyncStorage.clear();
-                alert('유저토큰 삭제 및 로그인유지 해제');
-                this.props.navigation.navigate('AuthLoading'); // 작동됨
-              }}
-            >
-              <Text style={styles.buttonTitle}>로그아웃 테스트</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.wrapContent}>
-          <View style={styles.content}>
-            <Text>{this.state.queiz}</Text>
-            <TextInput
-              placeholder="정답을 입력하세요"
-              onChangeText={(txt) => this.handleInputSingleValue(txt)}
-            >
-              {this.state.result === '' ? '' : this.state.result}
-            </TextInput>
-            <TouchableOpacity
-              onPress={() => {
-                const { result, solution } = this.state;
-                if (result === solution) {
-                  this.postresult();
-                } else {
-                  alert('땡~');
-                }
-              }}
-            >
-              <Text>보내자</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+      <View style={styles.content}>
+        <Title>넌센스 퀴즈</Title>
+        <Point>
+          <AntDesign name="heart" size={24} color="palevioletred" />
+          {this.props.user.point}
+        </Point>
+        <Queiz>{this.state.queiz}</Queiz>
+        <Result
+          placeholder="정답을 입력하세요"
+          onChangeText={(txt) => this.handleInputSingleValue(txt)}
+        >
+          {this.state.result === '' ? '' : this.state.result}
+        </Result>
+        <ButtonContainer
+          onPress={() => {
+            const { result, solution } = this.state;
+            if (result === solution) {
+              this.props.user.point += 1000;
+              this.postresult();
+              alert('하트 1000원을 받았습니다!');
+            } else {
+              alert('땡~');
+            }
+          }}
+        >
+          <Send>보내자</Send>
+        </ButtonContainer>
+        <Text>{this.props.user.point}</Text>
+        {/* <WebView
+          style={{ flex: 1 }}
+          javaScriptEnabled={true}
+          source={{
+            uri:
+              'https://www.youtube.com/embed/ZZ5LpwO-An4?rel=0&autoplay=0&showinfo=0&controls=0',
+          }}
+        /> */}
+      </View>
     );
   }
 }
-
+const Title = styled.Text`
+  font-size: 30px;
+  text-align: center;
+  color: black;
+  margin: 30px;
+`;
+const Point = styled.Text`
+  font-size: 30px;
+  text-align: right;
+  color: palevioletred;
+  margin: 10px;
+`;
+const Queiz = styled.Text`
+  font-size: 25px;
+  text-align: center;
+  color: black;
+  margin: 10px;
+`;
+const Result = styled.TextInput`
+  font-size: 25px;
+  text-align: center;
+  color: black;
+  margin: 10px;
+`;
+const Send = styled.Text`
+  text-align: center;
+  font-size: 20px;
+  color: black;
+`;
+const ButtonContainer = styled.TouchableOpacity`
+  border: 1px solid palevioletred;
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 90%;
+  padding: 10px;
+  border-radius: 10px;
+`;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -140,7 +175,7 @@ const styles = StyleSheet.create({
   content: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'yellow',
+    backgroundColor: 'white',
   },
   title: {
     fontSize: wp('10%'),
@@ -162,4 +197,5 @@ const mapStateToProps = (state: any) => {
     user: state.UserPhoto.myprofile,
   };
 };
+
 export default connect(mapStateToProps)(MiniGameScreen);

@@ -25,6 +25,8 @@ import * as Location from 'expo-location';
 import modalData from '../utils/modalData';
 import axios from 'axios';
 import getEnvVars from '../../environments';
+import { connect } from 'react-redux';
+import { setUser } from '../action';
 
 // interface SignUpProps {}
 
@@ -55,7 +57,7 @@ class ProFileChange extends Component<SignUpProps, SignUpState> {
   constructor(props: SignUpProps) {
     super(props);
     this.state = {
-      userInfo: this.props.navigation.state.params,
+      userInfo: this.props.userfile,
       lat: 0,
       lng: 0,
       DatePickerVisble: false,
@@ -636,9 +638,13 @@ class ProFileChange extends Component<SignUpProps, SignUpState> {
                   const data = this.state.userInfo;
                   console.log('-------------------');
                   const { apiUrl } = getEnvVars();
-                  console.log('data============', data);
+                  console.log(
+                    'data============',
+                    data,
+                    '=====================',
+                  );
                   console.log('env ip주소', apiUrl);
-
+                  this.props.navigation.dispatch(setUser(data));
                   axios({
                     url: `http://${apiUrl}/user/profile`, // 주소 맞음
                     method: 'POST',
@@ -652,6 +658,7 @@ class ProFileChange extends Component<SignUpProps, SignUpState> {
                         alert('이미 가입된 아이디입니다.');
                       } else if (res.status === 200) {
                         console.log(res.data);
+
                         alert('회원정보 수정 완료');
                         this.props.navigation.navigate('MyProfile'); // 로그인페이지로 이동
                       } else {
@@ -674,9 +681,18 @@ class ProFileChange extends Component<SignUpProps, SignUpState> {
     );
   }
 }
+const mapStateToProps = (state) => {
+  console.log(state, '==1=1=1=1=');
+  return {
+    userfile: state.UserPhoto.myprofile,
+  };
+};
+// const mapDispatchToProps = (dispatch) => {
+//   dispatch(setUser(data));
+// }
 
-export default withNavigation(ProFileChange);
-
+export default connect(mapStateToProps)(ProFileChange);
+// export default ProFileChange;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
