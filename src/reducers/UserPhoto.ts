@@ -32,6 +32,12 @@ const UserPhoto = (state = initialState, action: Action): UserState => {
       });
 
     case MY_PRO_FILE:
+      console.log(
+        '====asdfsdfsdasdfasdfasfasdf===state',
+        state.myprofile,
+        '===========asdfsadfsadfsadf',
+      );
+      console.log('통로과', action, '=========');
       return Object.assign({}, state, {
         myprofile: action.user,
       });

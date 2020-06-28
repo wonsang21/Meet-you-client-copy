@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Text,
+  AsyncStorage,
+} from 'react-native';
 import styled from 'styled-components/native';
 import { UserProps } from '../reducers/type';
 import { connect } from 'react-redux';
@@ -12,6 +18,7 @@ import {
   recently,
   idealType,
   personality,
+  myProFile,
 } from '../action';
 const StylePhoto = styled.Image`
   border-radius: 25px;
@@ -52,7 +59,7 @@ class RecommendRander extends Component {
       route: this.props.navigation.state.params.route,
     };
   }
-  getOldUser(route) {
+  getUser(route) {
     const { apiUrl } = getEnvVars();
     axios({
       url: `http://${apiUrl}/main/${route}`,
@@ -77,6 +84,9 @@ class RecommendRander extends Component {
         if (route === 'personality') {
           this.props.dispatch(personality(data.data));
         }
+      })
+      .then((result) => {
+        this.getUserfile();
       })
       .catch((error) => {
         console.log(error, 'error');
@@ -104,13 +114,39 @@ class RecommendRander extends Component {
           alert('포인트가 부족합니다');
         } else if (result.status === 200) {
           //디패로 포인트 삭감 된거 보내주기
-          this.getOldUser(route);
+          this.getUser(route);
           alert('유저의 포인트를 삭감하였습니다.');
         }
       })
       .catch((error) => {
         console.log(error, 'error');
       });
+  }
+  //dispatch로 유저 정보 업데이트
+  async getUserfile() {
+    const { apiUrl } = getEnvVars();
+    const value = await AsyncStorage.getItem('USERTOKEN');
+    return new Promise((resolve, reject) => {
+      resolve(
+        axios({
+          url: `http://${apiUrl}/user/information`,
+          method: 'get',
+          headers: {
+            Authorization: `Basic ${value}`,
+          },
+        })
+          .then((data) => {
+            this.props.dispatch(myProFile(data.data[0]));
+            this.setState({
+              userId: data.data[0].id,
+            });
+          })
+          .catch((error) => {
+            console.log(error, 'error');
+          }),
+      );
+      reject('에러');
+    });
   }
 
   render() {

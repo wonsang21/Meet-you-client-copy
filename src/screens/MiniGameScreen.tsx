@@ -78,7 +78,33 @@ class MiniGameScreen extends React.Component {
       },
     }).then((data) => {
       this.getMiniGame();
-      this.props.dispatch(myProFile({ point: this.props.user.point + 1000 }));
+      this.getUserfile();
+      // this.props.dispatch(myProFile({ 'point': this.props.user.point + 1000 }));
+    });
+  }
+  async getUserfile() {
+    const { apiUrl } = getEnvVars();
+    const value = await AsyncStorage.getItem('USERTOKEN');
+    return new Promise((resolve, reject) => {
+      resolve(
+        axios({
+          url: `http://${apiUrl}/user/information`,
+          method: 'get',
+          headers: {
+            Authorization: `Basic ${value}`,
+          },
+        })
+          .then((data) => {
+            this.props.dispatch(myProFile(data.data[0]));
+            this.setState({
+              userId: data.data[0].id,
+            });
+          })
+          .catch((error) => {
+            console.log(error, 'error');
+          }),
+      );
+      reject('에러');
     });
   }
 

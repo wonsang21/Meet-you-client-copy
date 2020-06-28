@@ -66,7 +66,6 @@ class App extends Component<Props, State> {
           .then((data) => {
             this.props.dispatch(myProFile(data.data[0]));
             this.props.dispatch(setUser(data.data[1]));
-            console.log(data.data[0], '이거=================== 무얏');
             this.setState({
               userId: data.data[0].id,
             });
