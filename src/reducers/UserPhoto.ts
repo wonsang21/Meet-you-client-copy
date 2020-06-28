@@ -25,7 +25,6 @@ const initialState: UserState = {
 };
 
 const UserPhoto = (state = initialState, action: Action): UserState => {
-  console.log(action, 'action');
   switch (action.type) {
     case SET_USER:
       return Object.assign({}, state, {
@@ -39,27 +38,27 @@ const UserPhoto = (state = initialState, action: Action): UserState => {
 
     case OLD_USER:
       return Object.assign({}, state, {
-        oldUser: action.user,
+        older: action.user,
       });
 
     case USER_HOBBY:
       return Object.assign({}, state, {
-        userHobby: action.user,
+        hobby: action.user,
       });
 
     case RECENTLY_USER:
       return Object.assign({}, state, {
-        recentlyUser: action.user,
+        recently: action.user,
       });
 
     case IDEALTYPE_USER:
       return Object.assign({}, state, {
-        idealTypeUser: action.user,
+        idealType: action.user,
       });
 
     case PERSONALITY_USER:
       return Object.assign({}, state, {
-        personalityUser: action.user,
+        personality: action.user,
       });
     // case MINIGAME_SCORE:
     //   return Object.assign({}, state, {

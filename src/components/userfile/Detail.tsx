@@ -6,6 +6,8 @@ const StylePhoto = styled.Image`
   border-radius: 25px;
   width: 300px;
   height: 300px;
+  margin: 70px;
+  margin-bottom: 20px;
 `;
 const UserNameAge = styled.Text`
   font-size: 21px;
@@ -13,12 +15,18 @@ const UserNameAge = styled.Text`
 const UserbloodAndaddress = styled.Text`
   font-size: 17px;
 `;
-const Sadsfe = styled.Text`
+const UserInfo = styled.Text`
   background-color: mistyrose;
-
+  flex-wrap: wrap;
   padding: 5px;
   margin: 10px;
   border-radius: 50px;
+`;
+
+const Line = styled.Text`
+  font-size: 0.0000001px;
+  width: 100%;
+  margin: 10px;
 `;
 
 interface Props {
@@ -26,7 +34,6 @@ interface Props {
 }
 
 function DetailsScreen({ navigation }: any) {
-  console.log(navigation.state.params.user, 'settifng');
   return (
     <ScrollView>
       <View style={{ flex: 1 }}>
@@ -43,31 +50,34 @@ function DetailsScreen({ navigation }: any) {
           </UserNameAge>
           <UserbloodAndaddress>
             {navigation.state.params.user.address},{' '}
-            {navigation.state.params.user.blood}
           </UserbloodAndaddress>
-          <Text>{navigation.state.params.user.gender}</Text>
-          <Text>{navigation.state.params.user.drinking}</Text>
-          <Text>{navigation.state.params.user.smoking}</Text>
-          <Text>{navigation.state.params.user.job}</Text>
-          <Text>{navigation.state.params.user.school}</Text>
+          <UserbloodAndaddress>
+            혈액형 :{navigation.state.params.user.blood}{' '}
+          </UserbloodAndaddress>
+          <UserbloodAndaddress>
+            성별 : {navigation.state.params.user.gender}
+          </UserbloodAndaddress>
+          <Line style={{ borderWidth: 1, borderRightColor: 'white' }}>선</Line>
+          <Text>음주 : {navigation.state.params.user.drinking}</Text>
+          <Text>흡연 : {navigation.state.params.user.smoking}</Text>
+          <Text>직업 : {navigation.state.params.user.job}</Text>
+          <Text>학벌 : {navigation.state.params.user.school}</Text>
         </View>
-        <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-        >
+        <View style={{ flex: 1, alignItems: 'center' }}>
           <Text>
             {' '}
             내 취미 는{' '}
             {navigation.state.params.user.hobby.map(
               (hobby: string, index: number) => (
-                <Sadsfe key={index}>{hobby}</Sadsfe>
+                <UserInfo key={index}>{hobby}, </UserInfo>
               ),
             )}
           </Text>
           <Text>
-            이상형{' '}
+            내 이상형{' '}
             {navigation.state.params.user.idealType.map(
               (idealType: string, index: number) => (
-                <Sadsfe key={index}>{idealType}</Sadsfe>
+                <UserInfo key={index}>{idealType}, </UserInfo>
               ),
             )}
           </Text>
@@ -76,7 +86,7 @@ function DetailsScreen({ navigation }: any) {
             내성격{' '}
             {navigation.state.params.user.personality.map(
               (personality: string, index: number) => (
-                <Sadsfe key={index}>{personality}</Sadsfe>
+                <UserInfo key={index}>{personality}, </UserInfo>
               ),
             )}
           </Text>

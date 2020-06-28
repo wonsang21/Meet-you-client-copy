@@ -4,7 +4,7 @@ import axios from 'axios';
 import { setUser } from '../action';
 import getEnvVars from '../../environments';
 function mapreduxstate(state: any) {
-  console.log(state, '이거 컨태이너');
+  // console.log(state, '이거 컨태이너');
   return {
     userfile: state,
   };
@@ -12,7 +12,6 @@ function mapreduxstate(state: any) {
 
 function mapDispatchToProps(dispatch: any, { userId }: any) {
   const { apiUrl } = getEnvVars();
-  console.log(typeof userId, '임너감넝람너라무푸푸푸푸푸푸');
   return {
     onClick: () =>
       axios({
