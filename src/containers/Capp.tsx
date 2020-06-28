@@ -16,12 +16,13 @@ import {
   recently,
   older,
 } from '../action';
-import { View, AsyncStorage } from 'react-native';
+import { View } from 'react-native';
 import getEnvVars from '../../environments';
 import axios from 'axios';
 import { UserProps } from '../reducers/type';
 import Recommend from '../components/Recommend/Recommend';
-import RecommendRander from './RecommendRander';
+// import RecommendRander from './RecommendRander';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export interface Props {
   userfile: UserProps;
@@ -69,6 +70,9 @@ class App extends Component<Props, State> {
             this.setState({
               userId: data.data[0].id,
             });
+            AsyncStorage.setItem('USERID', data.data[0].username);
+            AsyncStorage.setItem('USERNICKNAME', data.data[0].nickname);
+            AsyncStorage.setItem('USERPHOTO', data.data[0].profile_Photo);
           })
           .catch((error) => {
             console.log(error, 'error');
