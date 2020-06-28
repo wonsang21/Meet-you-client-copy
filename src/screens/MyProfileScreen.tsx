@@ -71,7 +71,7 @@ function MyProfileScreen({ navigation, userProfile }) {
         <Text>학벌 : {userProfile.school}</Text>
       </View>
       <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text>
+        {/* <Text>
           {' '}
           내 취미 는{' '}
           {userProfile.hobby.map((hobby: string, index: number) => (
@@ -90,7 +90,7 @@ function MyProfileScreen({ navigation, userProfile }) {
           {userProfile.personality.map((personality: string, index: number) => (
             <UserInfo key={index}>{personality}, </UserInfo>
           ))}
-        </Text>
+        </Text> */}
         <ButtonContainer
           onPress={() => navigation.navigate('ProFileChange', userProfile)}
         >
