@@ -32,6 +32,12 @@ const Athoder = styled.Text`
   font-size: 11px;
   color: black;
 `;
+const Photo = styled.View`
+  margin: auto;
+  display: flex;
+  padding: 10px;
+  flex-wrap: wrap;
+`;
 
 interface Props {
   userfile: {
@@ -57,7 +63,7 @@ const Main: React.FunctionComponent<Props> = ({
 
   return (
     <View style={{ flexDirection: 'column' }}>
-      <View style={{ flexDirection: 'row' }}>
+      <Photo style={{ flexDirection: 'row' }}>
         {userfile.UserPhoto.userfile.map((user, index) => (
           <Gallery key={index}>
             <TouchableOpacity
@@ -71,7 +77,7 @@ const Main: React.FunctionComponent<Props> = ({
             </TouchableOpacity>
           </Gallery>
         ))}
-      </View>
+      </Photo>
       <ButtonContainer onPress={onClick}>
         <Athoder>다른사람 추천</Athoder>
       </ButtonContainer>

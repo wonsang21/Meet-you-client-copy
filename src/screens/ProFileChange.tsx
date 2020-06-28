@@ -26,7 +26,7 @@ import modalData from '../utils/modalData';
 import axios from 'axios';
 import getEnvVars from '../../environments';
 import { connect } from 'react-redux';
-import { setUser } from '../action';
+import { setUser, myProFile } from '../action';
 
 // interface SignUpProps {}
 
@@ -644,7 +644,6 @@ class ProFileChange extends Component<SignUpProps, SignUpState> {
                     '=====================',
                   );
                   console.log('env ip주소', apiUrl);
-                  this.props.navigation.dispatch(setUser(data));
                   axios({
                     url: `http://${apiUrl}/user/profile`, // 주소 맞음
                     method: 'POST',
@@ -657,10 +656,11 @@ class ProFileChange extends Component<SignUpProps, SignUpState> {
                       if (res.status === 404) {
                         alert('이미 가입된 아이디입니다.');
                       } else if (res.status === 200) {
+                        this.props.dispatch(myProFile(data));
                         console.log(res.data);
 
                         alert('회원정보 수정 완료');
-                        this.props.navigation.navigate('MyProfile'); // 로그인페이지로 이동
+                        this.props.navigation.navigate('MyProfile'); // 마이페이지로
                       } else {
                         alert('회원가입 실패');
                       }
@@ -687,9 +687,6 @@ const mapStateToProps = (state) => {
     userfile: state.UserPhoto.myprofile,
   };
 };
-// const mapDispatchToProps = (dispatch) => {
-//   dispatch(setUser(data));
-// }
 
 export default connect(mapStateToProps)(ProFileChange);
 // export default ProFileChange;

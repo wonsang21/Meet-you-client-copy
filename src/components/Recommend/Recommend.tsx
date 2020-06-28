@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import styled from 'styled-components/native';
 import { UserProps } from '../../reducers/type';
 
@@ -32,44 +32,61 @@ interface Props {
   };
 }
 
-const Recommend: React.FunctionComponent<Props> = ({
-  userProFile,
-  navigation,
-}: Props) => {
+const Recommend: React.FunctionComponent<Props> = ({ navigation }: Props) => {
+  console.log(navigation);
   return (
     <View>
       <Text>여기는 새로운 추천</Text>
+      <TouchableOpacity
+        onPress={() => {
+          AsyncStorage.clear();
+          alert('유저토큰 삭제 및 로그인유지 해제');
+          navigation.navigate('AuthLoading'); // 작동됨
+        }}
+      >
+        <Text>로그아웃 테스트</Text>
+      </TouchableOpacity>
       <ButtonContainer
         onPress={() =>
-          navigation.navigate('RecommendRander', userProFile['oldUser'])
+          navigation.navigate('RecommendRander', {
+            route: 'older',
+          })
         }
       >
         <Athoder>밥 잘사주는 연상</Athoder>
       </ButtonContainer>
       <ButtonContainer
         onPress={() =>
-          navigation.navigate('RecommendRander', userProFile['userHobby'])
+          navigation.navigate('RecommendRander', {
+            route: 'hobby',
+          })
         }
       >
         <Athoder>취미가 비슷한 친구들</Athoder>
       </ButtonContainer>
       <ButtonContainer
         onPress={() =>
-          navigation.navigate('RecommendRander', userProFile['idealTypeUser'])
+          navigation.navigate('RecommendRander', {
+            route: 'idealType',
+          })
         }
       >
         <Athoder>내 이상형</Athoder>
       </ButtonContainer>
       <ButtonContainer
         onPress={() =>
-          navigation.navigate('RecommendRander', userProFile['personalityUser'])
+          navigation.navigate('RecommendRander', {
+            route: 'personality',
+          })
         }
       >
         <Athoder>나와 성격이 잘 맞는 여사친</Athoder>
       </ButtonContainer>
       <ButtonContainer
         onPress={() =>
-          navigation.navigate('RecommendRander', userProFile['recentlyUser'])
+          navigation.navigate('RecommendRander', {
+            route: 'recently',
+          })
         }
       >
         <Athoder>최근 가입한 여사친</Athoder>

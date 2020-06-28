@@ -10,11 +10,18 @@ import {
   recentlyUser,
   idealTypeUser,
   personalityUser,
+  personality,
+  idealType,
+  hobby,
+  recently,
+  older,
 } from '../action';
 import { View, AsyncStorage } from 'react-native';
 import getEnvVars from '../../environments';
 import axios from 'axios';
 import { UserProps } from '../reducers/type';
+import Recommend from '../components/Recommend/Recommend';
+import RecommendRander from './RecommendRander';
 
 export interface Props {
   userfile: UserProps;
@@ -46,9 +53,6 @@ class App extends Component<Props, State> {
   async getUserfile() {
     const { apiUrl } = getEnvVars();
     const value = await AsyncStorage.getItem('USERTOKEN');
-    // const value =
-    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuOFjCIsInBhc3N3b3JkIjoiYWQ5Y2U2NzEzZDA1N2MwYmIwOWU3OTcxZTcxNzhmMWFiODk1MGZjZCIsImlhdCI6MTU5Mjg1MTkxNCwiZXhwIjoxNTkyOTM4MzE0fQ.0IOMmrHFwcn60KOu6Zwv4FCddom4ptRa4Cr8TDg_KyI';
-    console.log(value);
     return new Promise((resolve, reject) => {
       resolve(
         axios({
@@ -84,7 +88,7 @@ class App extends Component<Props, State> {
       },
     })
       .then((data) => {
-        this.props.dispatch(oldUser(data.data));
+        this.props.dispatch(older(data.data));
       })
       .catch((error) => {
         console.log(error, 'error');
@@ -101,7 +105,7 @@ class App extends Component<Props, State> {
       },
     })
       .then((data) => {
-        this.props.dispatch(recentlyUser(data.data));
+        this.props.dispatch(recently(data.data));
       })
       .catch((error) => {
         console.log(error, 'error');
@@ -120,7 +124,7 @@ class App extends Component<Props, State> {
     })
       .then((data) => {
         console.log(data.data, '========f=f=f=f=f==f=ff==');
-        this.props.dispatch(userHobby(data.data));
+        this.props.dispatch(hobby(data.data));
       })
       .catch((error) => {
         console.log(error, 'error');
@@ -138,7 +142,7 @@ class App extends Component<Props, State> {
       },
     })
       .then((data) => {
-        this.props.dispatch(idealTypeUser(data.data));
+        this.props.dispatch(idealType(data.data));
       })
       .catch((error) => {
         console.log(error, 'error');
@@ -156,7 +160,7 @@ class App extends Component<Props, State> {
       },
     })
       .then((data) => {
-        this.props.dispatch(personalityUser(data.data));
+        this.props.dispatch(personality(data.data));
       })
       .catch((error) => {
         console.log(error, 'error');
@@ -164,21 +168,21 @@ class App extends Component<Props, State> {
   }
 
   render() {
-    console.log(this.props, '이거뭐ssssssssssssss야');
     return (
       <View>
         <Main
           userId={this.state.userId}
           navigation={this.props.navigation}
         ></Main>
+        {/* <Recommend navigation={this.props.navigation}></Recommend> */}
         <Old navigation={this.props.navigation}></Old>
+        {/* <RecommendRander></RecommendRander> */}
       </View>
     );
   }
 }
 
 const mapStateToProps = (state: any) => {
-  console.log(state, 'stateaaa');
   return {
     userfile: state.UserPhoto,
   };

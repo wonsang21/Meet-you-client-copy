@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import getEnvVars from '../../environments';
 import { TextInput } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
+import { myProFile } from '../action';
 class MiniGameScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -77,11 +78,12 @@ class MiniGameScreen extends React.Component {
       },
     }).then((data) => {
       this.getMiniGame();
+      this.props.dispatch(myProFile({ point: this.props.user.point + 1000 }));
     });
   }
 
   render() {
-    console.log('=l======1f11dcz===', this.props, '=11x1=ㅊ==========');
+    console.log(this.props);
     return (
       <View style={styles.content}>
         <Title>넌센스 퀴즈</Title>
@@ -100,7 +102,7 @@ class MiniGameScreen extends React.Component {
           onPress={() => {
             const { result, solution } = this.state;
             if (result === solution) {
-              this.props.user.point += 1000;
+              // this.props.user.point += 1000;
               this.postresult();
               alert('하트 1000원을 받았습니다!');
             } else {
@@ -111,14 +113,6 @@ class MiniGameScreen extends React.Component {
           <Send>보내자</Send>
         </ButtonContainer>
         <Text>{this.props.user.point}</Text>
-        {/* <WebView
-          style={{ flex: 1 }}
-          javaScriptEnabled={true}
-          source={{
-            uri:
-              'https://www.youtube.com/embed/ZZ5LpwO-An4?rel=0&autoplay=0&showinfo=0&controls=0',
-          }}
-        /> */}
       </View>
     );
   }

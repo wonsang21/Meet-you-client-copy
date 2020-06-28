@@ -20,27 +20,24 @@ export const myProFile = (user: UserProps[]): Action => ({
   user,
 });
 
-export const oldUser = (user: UserProps[]): Action => ({
+export const older = (user: UserProps[]): Action => ({
   type: OLD_USER,
   user,
 });
-export const userHobby = (user: UserProps[]): Action => ({
+export const hobby = (user: UserProps[]): Action => ({
   type: USER_HOBBY,
   user,
 });
-export const recentlyUser = (user: UserProps[]): Action => ({
+export const recently = (user: UserProps[]): Action => ({
   type: RECENTLY_USER,
   user,
 });
-export const idealTypeUser = (user: UserProps[]): Action => ({
+export const idealType = (user: UserProps[]): Action => ({
   type: IDEALTYPE_USER,
   user,
 });
-export const personalityUser = (user: UserProps[]): Action => ({
+export const personality = (user: UserProps[]): Action => ({
   type: PERSONALITY_USER,
   user,
 });
-export const miniGameScore = (point: UserProps[]): Action => ({
-  type: PERSONALITY_USER,
-  point,
-});
+
