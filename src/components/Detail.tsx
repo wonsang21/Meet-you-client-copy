@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
+import { Button } from 'react-native-elements';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const StylePhoto = styled.Image`
   border-radius: 25px;
@@ -33,7 +35,6 @@ const Line = styled.Text`
 const Info = styled.Text`
   margin-left: 10px;
 `;
-
 
 function DetailsScreen({ navigation }: any) {
   return (
@@ -93,6 +94,22 @@ function DetailsScreen({ navigation }: any) {
             )}
           </Info>
         </View>
+        <Button
+          icon={
+            <FontAwesome5
+              name="rocketchat"
+              size={24}
+              color="white"
+            ></FontAwesome5>
+          }
+          title=" 채팅하기"
+          onPress={() => {
+            navigation.navigate('Chatting', {
+              userInfo: navigation.state.params.user,
+            });
+            // console.log('해당유저 parms.user', navigation.state.params.user);
+          }}
+        ></Button>
       </View>
     </ScrollView>
   );

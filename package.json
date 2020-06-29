@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/vector-icons": "^10.2.0",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/datetimepicker": "^2.4.1",
     "@react-native-community/masked-view": "^0.1.10",
@@ -27,6 +28,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
     "react-native-elements": "^2.0.2",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-gifted-chat": "^0.16.3",
     "react-native-material-dialog": "^0.7.7",
     "react-native-reanimated": "~1.7.0",
     "react-native-responsive-screen": "^1.4.1",
@@ -41,12 +43,14 @@
     "react-navigation-tabs": "^2.8.13",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
+    "socket.io-client": "^2.3.0",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
     "@types/react": "~16.9.23",
     "@types/react-native": "~0.61.17",
+    "@types/socket.io-client": "^1.4.33",
     "@types/styled-components": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^3.2.0",
     "@typescript-eslint/parser": "^3.2.0",

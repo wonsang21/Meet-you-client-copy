@@ -34,7 +34,6 @@ const Info = styled.Text`
   margin-left: 10px;
 `;
 
-
 function DetailsScreen({ navigation }: any) {
   return (
     <ScrollView>

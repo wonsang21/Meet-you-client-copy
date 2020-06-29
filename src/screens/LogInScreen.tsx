@@ -106,7 +106,7 @@ class LogInScreen extends Component<AppProps, AppState> {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.props.navigation.navigate('SignUp')} // 테스트할때는 문자소진되서 'SignUp' 그외에는 'SmsAuth'
+            onPress={() => this.props.navigation.navigate('SmsAuth')} // 테스트할때는 문자소진되서 'SignUp' 그외에는 'SmsAuth'
           >
             <Text style={styles.buttonTitle}>회원가입</Text>
           </TouchableOpacity>

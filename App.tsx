@@ -9,7 +9,8 @@ import AuthLoadingScreen from './src/screens/AuthLoadingScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SmsAuthScreen from './src/screens/SmsAuthScreen';
-import ChatsScreen from './src/screens/ChatsScreen';
+import ChattingListScreen from './src/screens/ChattingListScreen';
+import ChattingScreen from './src/screens/ChattingScreen';
 import MiniGameScreen from './src/containers/MiniGameScreen';
 import MyProfileScreen from './src/containers/MyProfileScreen';
 import rootReducer from './src/reducers/index';
@@ -92,8 +93,11 @@ const MainStack = createStackNavigator(
 // 채팅 스택
 const ChatsStack = createStackNavigator(
   {
-    Chats: {
-      screen: ChatsScreen,
+    ChattingList: {
+      screen: ChattingListScreen,
+    },
+    Chatting: {
+      screen: ChattingScreen,
     },
   },
   {
