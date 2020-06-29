@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Recommend from '../components/Recommend/Recommend';
+import Recommend from '../components/Recommend';
 import { ReCommend } from '../reducers/type';
 
 function mapStateToProps(state: ReCommend) {

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Main from '../components/Main/Main';
+import Main from '../components/Main';
 import axios from 'axios';
 import { setUser } from '../action';
 import getEnvVars from '../../environments';

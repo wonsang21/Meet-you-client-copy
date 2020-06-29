@@ -7,7 +7,6 @@ import {
   RECENTLY_USER,
   IDEALTYPE_USER,
   PERSONALITY_USER,
-  MINIGAME_SCORE,
 } from '../action';
 import { UserProps, UserState } from './type';
 
@@ -32,12 +31,6 @@ const UserPhoto = (state = initialState, action: Action): UserState => {
       });
 
     case MY_PRO_FILE:
-      console.log(
-        '====asdfsdfsdasdfasdfasfasdf===state',
-        state.myprofile,
-        '===========asdfsadfsadfsadf',
-      );
-      console.log('통로과', action, '=========');
       return Object.assign({}, state, {
         myprofile: action.user,
       });
@@ -66,10 +59,6 @@ const UserPhoto = (state = initialState, action: Action): UserState => {
       return Object.assign({}, state, {
         personality: action.user,
       });
-    // case MINIGAME_SCORE:
-    //   return Object.assign({}, state, {
-    //     personalityUser: action.point,
-    //   });
     default:
       return state;
   }
