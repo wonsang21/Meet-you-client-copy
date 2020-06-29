@@ -19,7 +19,6 @@ import Capp from './src/containers/App';
 import Detail from './src/components/Detail';
 import { createStore, compose } from 'redux';
 import ProFileChange from './src/containers/ProFileChange';
-import { Ionicons } from '@expo/vector-icons';
 import { Entypo, AntDesign } from '@expo/vector-icons';
 declare global {
   interface Window {
@@ -164,17 +163,11 @@ const MyProfileStack = createStackNavigator(
 
 // 로그인 성공 후 보여질 탭 네비게이터 생성
 const TabStack = createBottomTabNavigator(
-  // {
-  //   MainStack,
-  //   ChatsStack,
-  //   MiniGameStack,
-  //   MyProfileStack,
-  // },
   {
     home: {
       screen: MainStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
+        tabBarIcon: () => (
           <Entypo name="home" size={24} color="palevioletred" />
         ),
       },
@@ -182,7 +175,7 @@ const TabStack = createBottomTabNavigator(
     채팅: {
       screen: ChatsStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
+        tabBarIcon: () => (
           <AntDesign name="wechat" size={24} color="palevioletred" />
         ),
       },
@@ -190,7 +183,7 @@ const TabStack = createBottomTabNavigator(
     미니게임: {
       screen: MiniGameStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
+        tabBarIcon: () => (
           <Entypo name="game-controller" size={24} color="palevioletred" />
         ),
       },
@@ -198,22 +191,22 @@ const TabStack = createBottomTabNavigator(
     프로필: {
       screen: MyProfileStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
+        tabBarIcon: () => (
           <AntDesign name="profile" size={24} color="palevioletred" />
         ),
       },
     },
   },
-  // {
-  //   initialRouteName: 'MainStack',
-  //   tabBarOptions: {
-  //     activeTintColor: 'tomato',
-  //     inactiveTintColor: 'gray',
-  //     labelStyle: {
-  //       fontSize: 12,
-  //     },
-  //   },
-  // },
+  {
+    //   initialRouteName: 'MainStack',
+    tabBarOptions: {
+      activeTintColor: 'tomato',
+      inactiveTintColor: 'gray',
+      labelStyle: {
+        fontSize: 12,
+      },
+    },
+  },
 );
 
 const RootStack = createSwitchNavigator(
