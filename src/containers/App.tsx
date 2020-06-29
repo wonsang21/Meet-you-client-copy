@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Main from './Main';
-import Old from './Old';
+import Old from './Recommend';
 import {
   setUser,
   myProFile,
-  oldUser,
-  userHobby,
-  recentlyUser,
-  idealTypeUser,
-  personalityUser,
   personality,
   idealType,
   hobby,
   recently,
   older,
 } from '../action';
-import { View } from 'react-native';
+import { UserProps } from '../reducers/type';
+
+import AsyncStorage from '@react-native-community/async-storage';
+import { View, ScrollView } from 'react-native';
 import getEnvVars from '../../environments';
 import axios from 'axios';
-import { UserProps } from '../reducers/type';
-import Recommend from '../components/Recommend/Recommend';
-// import RecommendRander from './RecommendRander';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export interface Props {
   userfile: UserProps;
@@ -172,15 +166,15 @@ class App extends Component<Props, State> {
 
   render() {
     return (
-      <View>
-        <Main
-          userId={this.state.userId}
-          navigation={this.props.navigation}
-        ></Main>
-        {/* <Recommend navigation={this.props.navigation}></Recommend> */}
-        <Old navigation={this.props.navigation}></Old>
-        {/* <RecommendRander></RecommendRander> */}
-      </View>
+      <ScrollView>
+        <View>
+          <Main
+            userId={this.state.userId}
+            navigation={this.props.navigation}
+          ></Main>
+          <Old navigation={this.props.navigation}></Old>
+        </View>
+      </ScrollView>
     );
   }
 }

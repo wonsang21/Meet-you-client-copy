@@ -7,26 +7,23 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  Picker,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { withNavigation } from 'react-navigation';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import {
   SinglePickerMaterialDialog,
   MultiPickerMaterialDialog,
 } from 'react-native-material-dialog';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Location from 'expo-location';
 import modalData from '../utils/modalData';
 import axios from 'axios';
 import getEnvVars from '../../environments';
 import { connect } from 'react-redux';
-import { setUser, myProFile } from '../action';
+import { myProFile } from '../action';
 
 // interface SignUpProps {}
 

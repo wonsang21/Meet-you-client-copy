@@ -5,7 +5,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import { ListItem } from 'react-native-elements';
+import { Button, ListItem } from 'react-native-elements';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import axios from 'axios';
 import { withNavigation } from 'react-navigation';
@@ -16,7 +17,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 interface ChattingListScreenProps {}
 
 class ChattingListScreen extends React.Component {
-  constructor(props: Readonly<ChatsProps>) {
+  constructor(props: Readonly<ChattingListScreenProps>) {
     super(props);
     this.state = {
       myuserName: '', // 사용자ID
@@ -60,6 +61,20 @@ class ChattingListScreen extends React.Component {
     // const list = ggggg;
     return (
       <ScrollView style={styles.container}>
+        <Button
+          icon={
+            <FontAwesome5
+              name="rocketchat"
+              size={24}
+              color="white"
+            ></FontAwesome5>
+          }
+          title=" 채팅목록 업데이트"
+          onPress={() => {
+            this.getChatListInfo();
+            // console.log('해당유저 parms.user', navigation.state.params.user);
+          }}
+        ></Button>
         {this.state.rooms.map((l, i) =>
           this.state.rooms[i].message !== null ? (
             <ListItem
@@ -69,7 +84,7 @@ class ChattingListScreen extends React.Component {
               subtitle={l.message[0]['text']}
               bottomDivider
               onPress={() => {
-                alert('안녕하세요');
+                // 클릭시 해당 대화방으로 이동 기능 구현중
               }}
             />
           ) : (
@@ -80,7 +95,7 @@ class ChattingListScreen extends React.Component {
               subtitle={l.message}
               bottomDivider
               onPress={() => {
-                alert('안녕하세요');
+                // 클릭시 해당 대화방으로 이동 기능 구현중
               }}
             />
           ),
