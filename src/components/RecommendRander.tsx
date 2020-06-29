@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Text,
-  AsyncStorage,
-} from 'react-native';
+import { View, TouchableOpacity, ScrollView, AsyncStorage } from 'react-native';
 import styled from 'styled-components/native';
 import { UserProps } from '../reducers/type';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import getEnvVars from '../../environments';
 import {
-  oldUser,
   older,
   hobby,
   recently,
@@ -20,6 +13,7 @@ import {
   personality,
   myProFile,
 } from '../action';
+import { AntDesign } from '@expo/vector-icons';
 const StylePhoto = styled.Image`
   border-radius: 25px;
   width: 150px;
@@ -41,7 +35,26 @@ const Photo = styled.View`
   padding: 10px;
   flex-wrap: wrap;
 `;
-
+const Point = styled.Text`
+  font-size: 30px;
+  text-align: right;
+  color: palevioletred;
+  margin: 10px;
+`;
+const Send = styled.Text`
+  text-align: center;
+  font-size: 20px;
+  color: black;
+`;
+const ButtonContainer = styled.TouchableOpacity`
+  border: 1px solid palevioletred;
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 90%;
+  padding: 10px;
+  border-radius: 10px;
+`;
 interface Props {
   navigation: {
     state: {
@@ -154,6 +167,10 @@ class RecommendRander extends Component {
     console.log(this.props.userfile, '=f============sadf=sad=safdf=safd=');
     return this.props.userfile[route] ? (
       <ScrollView>
+        <Point>
+          <AntDesign name="heart" size={24} color="palevioletred" />
+          {this.props.userfile.myprofile.point}
+        </Point>
         <Photo style={{ flexDirection: 'row' }}>
           {this.props.userfile[route].map((user: UserProps, index: number) => (
             <Gallery key={index}>
@@ -169,9 +186,9 @@ class RecommendRander extends Component {
             </Gallery>
           ))}
         </Photo>
-        <TouchableOpacity onPress={() => this.userPoint(route)}>
-          <Text>다른 유저 받기 Point -1000</Text>
-        </TouchableOpacity>
+        <ButtonContainer onPress={() => this.userPoint(route)}>
+          <Send>다른 유저 받기 Point -1000</Send>
+        </ButtonContainer>
       </ScrollView>
     ) : (
       <View></View>

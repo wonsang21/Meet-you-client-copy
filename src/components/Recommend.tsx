@@ -1,21 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View } from 'react-native';
 import styled from 'styled-components/native';
-import { UserProps } from '../../reducers/type';
-
-const ButtonContainer = styled.TouchableOpacity`
-  border: 1px solid palevioletred;
-  margin: auto;
-  margin-top: 5px;
-  width: 90%;
-  padding: 10px;
-  border-radius: 10px;
-`;
-const Athoder = styled.Text`
-  text-align: center;
-  font-size: 11px;
-  color: black;
-`;
+import { UserProps } from '../reducers/type';
 
 interface Props {
   userProFile: UserProps[];
@@ -36,16 +22,6 @@ const Recommend: React.FunctionComponent<Props> = ({ navigation }: Props) => {
   console.log(navigation);
   return (
     <View>
-      <Text>여기는 새로운 추천</Text>
-      <TouchableOpacity
-        onPress={() => {
-          AsyncStorage.clear();
-          alert('유저토큰 삭제 및 로그인유지 해제');
-          navigation.navigate('AuthLoading'); // 작동됨
-        }}
-      >
-        <Text>로그아웃 테스트</Text>
-      </TouchableOpacity>
       <ButtonContainer
         onPress={() =>
           navigation.navigate('RecommendRander', {
@@ -96,3 +72,17 @@ const Recommend: React.FunctionComponent<Props> = ({ navigation }: Props) => {
 };
 
 export default Recommend;
+
+const ButtonContainer = styled.TouchableOpacity`
+  border: 1px solid palevioletred;
+  margin: auto;
+  margin-top: 5px;
+  width: 90%;
+  padding: 10px;
+  border-radius: 10px;
+`;
+const Athoder = styled.Text`
+  text-align: center;
+  font-size: 11px;
+  color: black;
+`;

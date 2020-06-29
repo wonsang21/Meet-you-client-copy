@@ -138,7 +138,6 @@ class MiniGameScreen extends React.Component {
         >
           <Send>보내자</Send>
         </ButtonContainer>
-        <Text>{this.props.user.point}</Text>
       </View>
     );
   }

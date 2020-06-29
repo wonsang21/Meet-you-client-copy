@@ -1,21 +1,9 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import styled from 'styled-components/native';
 
-import oc from 'open-color';
-import axios from 'axios';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 const StylePhoto = styled.Image`
   width: 100%;
   height: 300px;
@@ -71,7 +59,7 @@ function MyProfileScreen({ navigation, userProfile }) {
         <Text>학벌 : {userProfile.school}</Text>
       </View>
       <View style={{ flex: 1, alignItems: 'center' }}>
-        {/* <Text>
+        <Text>
           {' '}
           내 취미 는{' '}
           {userProfile.hobby.map((hobby: string, index: number) => (
@@ -90,7 +78,7 @@ function MyProfileScreen({ navigation, userProfile }) {
           {userProfile.personality.map((personality: string, index: number) => (
             <UserInfo key={index}>{personality}, </UserInfo>
           ))}
-        </Text> */}
+        </Text>
         <ButtonContainer
           onPress={() => navigation.navigate('ProFileChange', userProfile)}
         >
@@ -99,11 +87,11 @@ function MyProfileScreen({ navigation, userProfile }) {
         <ButtonContainer
           onPress={() => {
             AsyncStorage.clear();
-            alert('유저토큰 삭제 및 로그인유지 해제');
+            alert('로그아웃');
             navigation.navigate('AuthLoading'); // 작동됨
           }}
         >
-          <Athoder>로그아웃 테스트</Athoder>
+          <Athoder>로그아웃</Athoder>
         </ButtonContainer>
       </View>
     </ScrollView>
