@@ -38,6 +38,7 @@ class ChattingScreen extends React.Component<
       messages: [],
     };
 
+    this.count = 0;
     this.mounted = false;
     const { apiUrl } = getEnvVars();
     this.getMyInfo = this.getMyInfo.bind(this);
@@ -51,14 +52,23 @@ class ChattingScreen extends React.Component<
   }
 
   componentDidMount() {
-    this.getMyInfo();
+    this.mounted = true;
+    if (this.mounted === true) {
+      this.getMyInfo();
+      this.count++;
+    }
   }
 
-  componentDidUpdate(prevState: any) {
-    console.log('디드업데이트 스테이트값: ', this.state);
-    if (prevState.myUsername !== this.state.myUsername) {
+  componentDidUpdate() {
+    console.log('디드업데이트 스테이트값1: ', this.state);
+    if (this.count === 1) {
       this.joinRoom();
+      this.count = 0;
     }
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   getMyInfo = async () => {

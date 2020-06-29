@@ -10,64 +10,81 @@ import { ListItem } from 'react-native-elements';
 import axios from 'axios';
 import { withNavigation } from 'react-navigation';
 
-import io from 'socket.io-client';
 import getEnvVars from '../../environments';
+import AsyncStorage from '@react-native-community/async-storage';
 
-interface ChatsProps {}
+interface ChattingListScreenProps {}
 
-class ChatsScreen extends React.Component {
+class ChattingListScreen extends React.Component {
   constructor(props: Readonly<ChatsProps>) {
     super(props);
-    this.state = {};
+    this.state = {
+      myuserName: '', // 사용자ID
+      myProfile_Photo: '', // 사용자 프로필
+      rooms: [],
+    };
+    this.getChatListInfo = this.getChatListInfo.bind(this);
   }
 
+  componentDidMount() {
+    this.getChatListInfo();
+  }
+
+  getChatListInfo = async () => {
+    const { apiUrl } = getEnvVars();
+    const username = await AsyncStorage.getItem('USERID');
+    console.log('USERID', username);
+    const myProfile_Photo = await AsyncStorage.getItem('USERPHOTO');
+
+    axios
+      .post(`http://${apiUrl}/roomName`, { username: username })
+      .then((res) => {
+        // console.log('DB에서 뱓은 메시지배열', JSON.parse(res.data[0].message));
+        console.log('DB에서 뱓은 룸배열', res.data); // 룸배열
+        console.log('DB에서 뱓은 메시지', res.data[0].message); // 8번째 룸의 메시지 (확정)
+
+        this.setState({
+          myuserName: username,
+          myProfile_Photo: myProfile_Photo,
+          rooms: res.data,
+        });
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  };
+
   render() {
-    const list = [
-      {
-        name: 'Amy Farha',
-        avatar_url:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-        subtitle:
-          '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
-      },
-      {
-        name: 'Chris Jackson',
-        avatar_url:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Vice Chairman',
-      },
-      {
-        name: 'Chris Jackson',
-        avatar_url:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Vice Chairman',
-      },
-      {
-        name: 'Chris Jackson',
-        avatar_url:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Vice Chairman',
-      },
-      {
-        name: 'Chris Jackson',
-        avatar_url:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Vice Chairman',
-      },
-    ];
+    console.log('this.state', this.state.rooms.length);
+
+    // const list = ggggg;
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.wrapContent}>
-          {list.map((l, i) => (
+        {this.state.rooms.map((l, i) =>
+          this.state.rooms[i].message !== null ? (
             <ListItem
               key={i}
-              leftAvatar={{ source: { uri: l.avatar_url } }}
-              title={l.name}
-              subtitle={l.subtitle}
+              leftAvatar={{ source: { uri: l.avatar } }}
+              title={l.roomName}
+              subtitle={l.message[0]['text']}
               bottomDivider
+              onPress={() => {
+                alert('안녕하세요');
+              }}
             />
-          ))}
-        </View>
+          ) : (
+            <ListItem
+              key={i}
+              leftAvatar={{ source: { uri: l.avatar } }}
+              title={l.roomName}
+              subtitle={l.message}
+              bottomDivider
+              onPress={() => {
+                alert('안녕하세요');
+              }}
+            />
+          ),
+        )}
       </ScrollView>
     );
   }
@@ -94,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(ChatsScreen);
+export default withNavigation(ChattingListScreen);
